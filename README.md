@@ -13,6 +13,7 @@ Player has six methods.
 *other four methods are movement methods to check if movement is available and move.
 
 QESTIONS:
+
 1. GameMechanic in Server:
 I assumed my GameMechanic is on Server side.
 Notes start with * are hints for Volodymyr to insert my code into Server code.
