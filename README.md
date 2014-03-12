@@ -1,5 +1,30 @@
 GameMechanic
 ============
+March 12th 2014
+
+All classes added. (Box, Enemy are new, total 7 classes)
+
+Board:
+All (GUI) initializations are in constrator.
+Method void bombExplode(Bomb bomb): specific bomb explodes.
+
+Bomb:
+Method void explode(): this bomb explodes to burn squares around it.
+Method void burn(int x, int y): different effects when burn different targets.
+
+Player:
+Added int bombsNumber: number of bombs the player has.
+Added int bombsMaxNumber: the max number of bombs the player can place.
+(Bomb power-up coming: increase the max number of bombs the player can place.)
+void loadBomb() number of boms the player has plus one when his bomb explodes.
+void placeBomb() place a bomb at his current location.
+
+QUESTIONS:
+Double Buffer:
+Have no idea about Objectives:1d : Include the bomb factory and the double-buffer update.
+
+
+-----------------------------------------------------------------------------------------------------------------
 March 6th 2014
 
 Five different classes for Board, Player, Door, Bomb, Obstacle.
@@ -12,7 +37,7 @@ Player has six methods.
 *getX() and getY() for server to get updated location of players.
 *other four methods are movement methods to check if movement is available and move.
 
-QESTIONS:
+QUESTIONS:
 
 1. GameMechanic in Server:
 I assumed my GameMechanic is on Server side.
