@@ -1,10 +1,10 @@
 
-public class Door {
+public class Enemy {
 
 	private Board board;
 	private int x, y;
 
-	public Door(Board board, int x, int y){
+	public Enemy(Board board, int x, int y){
 		this.x = x;
 		this.y = y;
 		this.board = board;
@@ -17,5 +17,5 @@ public class Door {
 	public int getY(){
 		return y;
 	}
-
+	
 }

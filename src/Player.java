@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 
 public class Player {
 
-
 	private Board board;
 	private int x, y;
+	private int bombMaxNumber;
+	private int bombsNumber;
 
 	public Player(Board board, int x, int y){
 		this.x = x;
@@ -17,6 +20,10 @@ public class Player {
 
 	public int getY(){
 		return y;
+	}
+	
+	public int getBombsNumber() {
+		return bombsNumber;		
 	}
 
 	public void moveUp(){
@@ -51,5 +58,16 @@ public class Player {
 		}
 	}
 
+	public void loadBomb(){
+		bombsNumber++;
+	}
+
+	public void placeBomb(){
+		if (bombsNumber > 0) {
+			bombsNumber--;
+			Bomb bomb = new Bomb(board, this, x, y);
+			board.addBomb(bomb);
+		}
+	}
 
 }
