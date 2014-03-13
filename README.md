@@ -1,5 +1,15 @@
 GameMechanic
 ============
+March 13th 2014
+
+Player:
+SocketAddress added in Player class constrator.
+move() method to convert character to movement.
+
+Bomb:
+burn(): remove target from its arraylist if burned.
+searching method is not completed yet.
+
 March 12th 2014
 
 All classes added. (Box, Enemy are new, total 7 classes)
