@@ -1,17 +1,34 @@
+import java.net.SocketAddress;
 import java.util.ArrayList;
 
 
 public class Player {
 
+	SocketAddress clientAddress;
 	private Board board;
 	private int x, y;
 	private int bombMaxNumber;
 	private int bombsNumber;
+	private char command;	//command is the character received from clinet
 
-	public Player(Board board, int x, int y){
+	public Player(Board board, int x, int y, SocketAddress clientAddress){
 		this.x = x;
 		this.y = y;
 		this.board = board;
+		this.clientAddress = clientAddress;
+	}
+
+	/* method to convert character command to movement*/
+	public void move(){
+		if ( command == 'u') {
+			this.moveUp();
+		}else if ( command == 'd') {
+			this.moveDown();
+		}else if ( command == 'r') {
+			this.moveRight();
+		}else if ( command == 'l') {
+			this.moveLeft();
+		}
 	}
 
 	public int getX(){

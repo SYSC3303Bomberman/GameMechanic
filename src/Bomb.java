@@ -34,10 +34,19 @@ public class Bomb {
 	public void burn(int x, int y){
 		if (board.hasPlayerAt(x, y)) {
 			//player died
+			for (int i = 0; i < board.players.size() ; i++ ) {
+				board.players.remove(i);
+			}
 		}else if (board.hasBoxAt(x, y)) {
 			//box destroyed
+			for (int i = 0; i < board.boxes.size() ; i++ ) {
+				board.boxes.remove(i);
+			}
 		}else if (board.hasEnemyAt(x, y)) {
 			//enemy killed
+			for (int i = 0; i < board.enemies.size() ; i++ ) {
+				board.enemies.remove(i);
+			}
 		}
 	}
 }

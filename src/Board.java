@@ -1,3 +1,4 @@
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,12 +9,12 @@ public class Board {
 	public static final int DEFAULT_BOARD_WIDTH = 15;
 	public static final int DEFAULT_BOX_NUMBER = 10;
 	public static final int DEFAULT_ENEMY_NUMBER = 5;
-	private Door door;
-	private ArrayList<Obstacle> obstacles;
-	private ArrayList<Box> boxes;
-	private ArrayList<Enemy> enemies;
-	private ArrayList<Player> players;
-	private ArrayList<Bomb> bombs;
+	public Door door;
+	public ArrayList<Obstacle> obstacles;
+	public ArrayList<Box> boxes;
+	public ArrayList<Enemy> enemies;
+	public ArrayList<Player> players;
+	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
 
 	public Board(){
@@ -59,6 +60,7 @@ public class Board {
 		/* ENEMY INITIALIZATION DONE*/
 		/* Obsatacles,door boxes, enemies can be displayed on GUI*/
 	}
+
 	public void addObstacle(int x, int y){
 		Obstacle obstacle = new Obstacle(this, x, y);
 		obstacles.add(obstacle);
@@ -74,13 +76,13 @@ public class Board {
 		enemies.add(enemy);
 	}
 
-	public void addPlayer(){
+	public void addPlayer(SocketAddress clientAddress){
 		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		Player player = new Player(this, tempX, tempY);	//player starts at random place
+		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
 		players.add(player);
 	}
 
