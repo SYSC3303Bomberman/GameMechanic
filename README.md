@@ -10,6 +10,8 @@ Bomb:
 burn(): remove target from its arraylist if burned.
 searching method is not completed yet.
 
+-----------------------------------------------------------------------------------------------------------------
+
 March 12th 2014
 
 All classes added. (Box, Enemy are new, total 7 classes)
