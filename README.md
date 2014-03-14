@@ -2,6 +2,22 @@ GameMechanic
 ============
 March 13th 2014
 
+Board:
+bombExplode() is deleted from Board class. All explosion will be called in Bomb itself.
+
+Player:
+Another command 'p' for placeBomb().
+More logic for movements.
+
+Bomb:
+explode() will burn() its current location, the corresponding player will loadBomb(), bomb removes from bombs.
+More detials for burn() to destory things around.
+
+Enemy:
+enemy now has movement method.
+
+March 13th 2014
+
 Player:
 SocketAddress added in Player class constrator.
 move() method to convert character to movement.
