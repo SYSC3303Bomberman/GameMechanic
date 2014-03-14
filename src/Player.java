@@ -2,7 +2,7 @@ import java.net.SocketAddress;
 import java.util.ArrayList;
 
 
-public class Player {
+public class Player extends Thread{
 
 	SocketAddress clientAddress;
 	private Board board;

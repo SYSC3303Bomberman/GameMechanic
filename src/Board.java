@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Board {
+public class Board extends Thread{
 
 	public static final int DEFAULT_BOARD_LENGTH = 21;
 	public static final int DEFAULT_BOARD_WIDTH = 15;
@@ -18,6 +18,7 @@ public class Board {
 	private int tempX, tempY;
 
 	public Board(){
+		/*INITIAL ALL ARRAYLISTS*/
 		obstacles = new ArrayList<Obstacle>();
 		boxes = new ArrayList<Box>();
 		enemies = new ArrayList<Enemy>();
@@ -139,6 +140,42 @@ public class Board {
 			if((bombs.get(i).getX() == x)&&(bombs.get(i).getY() == y)){return true;}
 		}
 		return false;
+	}
+	/***********************************
+	 * Vlad addition
+	 **********************************/
+	public Player hasPlayer(SocketAddress clientAddress){
+		Player player = new Player();
+		for(int i=0; i<players.size();i++){
+			player = players.get(i);
+			if(player.getPlayerAddress().equals(clientAddress)){
+				break;
+			}
+		}
+		return player;
+	}
+	
+	public void printBoard(){
+		for(int j=0;j<Board.DEFAULT_BOARD_LENGTH;j++){
+			for(int i=0;i<Board.DEFAULT_BOARD_WIDTH;i++){
+				if(this.hasObstacleAt(i,j)){
+					str += 'O';
+				}else if(this.hasBoxAt(i,j)){
+					str += 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					str += 'E';
+				}else if(this.hasPlayerAt(i,j)){
+					str += 'P';
+				}else if(this.hasBombAt(i,j)){
+					str += 'X';
+				}else if(this.hasDoorAt(i,j)){
+					str += 'D';
+				}else{
+					str += ' ';
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 }

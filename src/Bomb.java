@@ -1,5 +1,5 @@
 
-public class Bomb {
+public class Bomb extends Thread{
 
 	private Board board;
 	private int x, y;
