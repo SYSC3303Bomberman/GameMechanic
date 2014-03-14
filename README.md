@@ -9,6 +9,7 @@ Game process depends on increment() after input from player.
 
 ALL METHODS WORK FINE.
 
+-----------------------------------------------------------------------------------------------------------------
 March 12th 2014
 
 All classes added. (Box, Enemy are new, total 7 classes)
