@@ -1,4 +1,3 @@
-
 public class Obstacle {
 
 	private Board board;
@@ -17,4 +16,5 @@ public class Obstacle {
 	public int getY(){
 		return y;
 	}
+	
 }

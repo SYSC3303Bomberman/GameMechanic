@@ -1,4 +1,3 @@
-
 public class Door {
 
 	private Board board;
