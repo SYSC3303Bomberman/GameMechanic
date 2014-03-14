@@ -36,7 +36,7 @@ public class Player extends Thread{
 		return this.clientAddress;
 	}
 
-	/* method to convert character command to movement*/
+	/* method to convert character command to movement*/	
 	public void move(String movement){
 		command = movement;
 		if (command.equals("u")) {
@@ -47,6 +47,8 @@ public class Player extends Thread{
 			this.moveRight();
 		}else if (command.equals("l")) {
 			this.moveLeft();
+		}else if (command.equals("p")) {
+			this.placeBomb();
 		}
 	}
 
