@@ -1,5 +1,19 @@
 GameMechanic
 ============
+March 14th 2014
+
+Board, Player, Enemy, Bomb extends Thread.
+
+Player:
+move() rebuild.
+Empty constructor, getPlayerAddress() added for client.
+
+Board:
+hasPlayer() added for communicate.
+printBoard() replaced toString() and print().
+
+-----------------------------------------------------------------------------------------------------------------
+
 March 13th 2014
 
 Board:
