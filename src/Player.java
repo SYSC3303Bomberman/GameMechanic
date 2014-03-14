@@ -20,21 +20,6 @@ public class Player extends Thread{
 		bombsNumber = 1;
 	}
 
-	/* method to convert character command to movement*/
-	public void move(){
-		if ( command == 'u') {
-			this.moveUp();
-		}else if ( command == 'd') {
-			this.moveDown();
-		}else if ( command == 'r') {
-			this.moveRight();
-		}else if ( command == 'l') {
-			this.moveLeft();
-		}else if ( command == 'p') {
-			this.placeBomb();
-		}
-	}
-
 	public int getX(){
 		return x;
 	}
@@ -45,6 +30,24 @@ public class Player extends Thread{
 	
 	public int getBombsNumber() {
 		return bombsNumber;		
+	}
+
+		public SocketAddress getPlayerAddress(){
+		return this.clientAddress;
+	}
+
+	/* method to convert character command to movement*/
+	public void move(String movement){
+		command = movement;
+		if (command.equals("u")) {
+			this.moveUp();
+		}else if (command.equals("d")) {
+			this.moveDown();
+		}else if (command.equals("r")) {
+			this.moveRight();
+		}else if (command.equals("l")) {
+			this.moveLeft();
+		}
 	}
 
 	public void moveUp(){

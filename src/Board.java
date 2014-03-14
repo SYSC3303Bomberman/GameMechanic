@@ -141,6 +141,7 @@ public class Board extends Thread{
 		}
 		return false;
 	}
+	
 	/***********************************
 	 * Vlad addition
 	 **********************************/
