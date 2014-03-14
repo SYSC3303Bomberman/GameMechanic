@@ -155,27 +155,33 @@ public class Board extends Thread{
 		return player;
 	}
 	
-	public void printBoard(){
-		for(int j=0;j<Board.DEFAULT_BOARD_LENGTH;j++){
-			for(int i=0;i<Board.DEFAULT_BOARD_WIDTH;i++){
-				if(hasObstacleAt(i,j)){
-					System.out.print("O");
-				}else if(hasBoxAt(i,j)){
-					System.out.print("B");
-				}else if(hasEnemyAt(i,j)){
-					System.out.print("E");
-				}else if(hasPlayerAt(i,j)){
-					System.out.print("P");
-				}else if(hasBombAt(i,j)){
-					System.out.print("X");
-				}else if(hasDoorAt(i,j)){
-					System.out.print("D");	
+	public String toString(){
+		String str = "";
+		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
+			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
+				if(this.hasObstacleAt(i,j)){
+					str += 'O';
+				}else if(this.hasBoxAt(i,j)){
+					str += 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					str += 'E';
+				}else if(this.hasPlayerAt(i,j)){
+					str += 'P';
+				}else if(this.hasBombAt(i,j)){
+					str += 'X';
+				}else if(this.hasDoorAt(i,j)){
+					str += 'D';
 				}else{
-					System.out.print(" ");
+					str += ' ';
 				}
 			}
-			System.out.println();
+			str += '\n';
 		}
+		return str;
+	}
+
+	public void printBoard(){
+		System.out.println(this.toString());
 	}
 		
 }
