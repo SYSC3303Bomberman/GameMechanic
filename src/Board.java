@@ -1,4 +1,3 @@
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,14 +17,22 @@ public class Board {
 	private int tempX, tempY;
 
 	public Board(){
+		obstacles = new ArrayList<Obstacle>();
+		boxes = new ArrayList<Box>();
+		enemies = new ArrayList<Enemy>();
+		players = new ArrayList<Player>();
+		bombs = new ArrayList<Bomb>();
+		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH; j++) {
 			this.addObstacle(0, j);
 			this.addObstacle((DEFAULT_BOARD_WIDTH-1), j);
 		}
+		/* ADD OBSTACLES ON RIGHT AND LEFT EDGES */
 		for (int i = 0; i < DEFAULT_BOARD_WIDTH ; i++) {
 			this.addObstacle(i, 0);
 			this.addObstacle(i, (DEFAULT_BOARD_LENGTH-1));
 		}
+		/* ADD ALL OTHER OBSTACLES */
 		for (int i = 2; i < DEFAULT_BOARD_WIDTH ; i+=2) {
 			for (int j = 2; j < DEFAULT_BOARD_LENGTH; j+=2) {
 				this.addObstacle(i, j);
@@ -76,23 +83,18 @@ public class Board {
 		enemies.add(enemy);
 	}
 
-	public void addPlayer(SocketAddress clientAddress){
+	public void addPlayer(){
 		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
+		Player player = new Player(this, tempX, tempY);	//player starts at random place
 		players.add(player);
 	}
 
 	public void addBomb(Bomb bomb){
 		bombs.add(bomb);
-	}
-
-	public void bombExplode(Bomb bomb){
-		bomb.getPlayer().loadBomb();	// player loads one bomb at the time his bomb explodes
-		bomb.explode();
 	}
 
 	public boolean hasDoorAt(int x, int y){
