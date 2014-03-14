@@ -1,5 +1,5 @@
 
-public class Bomb {
+public class Bomb extends Thread {
 
 	private Board board;
 	private int x, y;
@@ -62,8 +62,9 @@ public class Bomb {
 		}
 	}
 	/* ALL BELOW FOR TEST */
-	public void increment(){
+	public void increment() throws InterruptedException{
 		timer++;
+		Thread.sleep(200);
 		if (timer == 4) {	//time of create = 1
 			this.explode();	//after 3 steps explodes
 		}

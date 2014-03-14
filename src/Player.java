@@ -1,14 +1,17 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Player {
+public class Player extends Thread implements KeyListener {
 
 	private Board board;
 	private int x, y;
 	private int bombsMaxNumber;
 	private int bombsNumber;
 	private char command;	//command is the character received from clinet
+	private char c;
 
 	public Player(Board board, int x, int y){
 		this.x = x;
@@ -107,12 +110,32 @@ public class Player {
 		}
 	}
 	/* ALL BELOW FOR TEST */
-	public void increment(){
+	public void increment() throws InterruptedException{
 		System.out.println("\"u\" for up, \"d\" for down, \"r\" for right, \"l\" for left, \"s\" for stay, \"p\" for place bomb:");
-		Scanner scanner = new Scanner(System.in);
-		this.command = scanner.next().charAt(0);
+		//Scanner scanner = new Scanner(System.in);
+		//this.command = scanner.next().charAt(0);
+		System.out.println(c);
 		this.act();
 	}
+	
+	public void keyPressed(KeyEvent e) {
+		c = e.getKeyChar();
+		command = c;
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		c = e.getKeyChar();
+		command = c;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		c = e.getKeyChar();
+		command = c;		
+	}
+	
 	/* ALL ABOVE FOR TEST */
+	
 
 }

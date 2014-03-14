@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Board {
+public class Board extends Thread {
 
 	public static final int DEFAULT_BOARD_LENGTH = 7;
 	public static final int DEFAULT_BOARD_WIDTH = 5;
@@ -16,7 +16,7 @@ public class Board {
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
 
-	public Board(){
+	public Board() {
 		obstacles = new ArrayList<Obstacle>();
 		boxes = new ArrayList<Box>();
 		enemies = new ArrayList<Enemy>();
@@ -141,7 +141,7 @@ public class Board {
 	}
 	
 	/* ALL BELOW FOR TEST */
-	public void increment(){
+	public void increment() throws InterruptedException{
 		for(int i = 0; i < enemies.size(); i++){	
 			enemies.get(i).increment();
 		}	
@@ -182,10 +182,11 @@ public class Board {
 		System.out.println(this.toString());
 	}
 
-	public void play(){
+	public void play() throws InterruptedException{
 		this.addPlayer();
 		while(players.size()!=0){
 			this.print();
+			Thread.sleep(100);
 			this.increment();
 		}
 	}
