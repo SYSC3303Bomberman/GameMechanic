@@ -40,7 +40,7 @@ public class Enemy {
 
 	public void moveDown(){
 		if(x < Board.DEFAULT_BOARD_WIDTH){
-			if (board.hasPlayerAt((x-1),y)) {
+			if (board.hasPlayerAt((x+1),y)) {
 				for (int i = 0; i < board.players.size() ; i++ ) {
 					if ((board.players.get(i).getX()==(x+1))&&(board.players.get(i).getY()==y)) {
 						board.players.remove(i);
@@ -55,7 +55,7 @@ public class Enemy {
 
 	public void moveRight(){
 		if(x < Board.DEFAULT_BOARD_LENGTH){
-			if (board.hasPlayerAt((x-1),y)) {
+			if (board.hasPlayerAt(x,(y+1))) {
 				for (int i = 0; i < board.players.size() ; i++ ) {
 					if ((board.players.get(i).getX()==x)&&(board.players.get(i).getY()==(y+1))) {
 						board.players.remove(i);
@@ -70,7 +70,7 @@ public class Enemy {
 
 	public void moveLeft(){
 		if(y > 0){
-			if (board.hasPlayerAt((x-1),y)) {
+			if (board.hasPlayerAt(x,(y-1))) {
 				for (int i = 0; i < board.players.size() ; i++ ) {
 					if ((board.players.get(i).getX()==x)&&(board.players.get(i).getY()==(y-1))) {
 						board.players.remove(i);
