@@ -12,6 +12,9 @@ Board:
 hasPlayer() added for communicate.
 printBoard() replaced toString() and print().
 
+Bomb:
+Everything been destoried will be delete from its ArrayList.
+
 -----------------------------------------------------------------------------------------------------------------
 
 March 13th 2014
