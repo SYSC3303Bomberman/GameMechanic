@@ -2,12 +2,11 @@ import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Board extends Thread{
 
-	public static final int DEFAULT_BOARD_LENGTH = 21;
-	public static final int DEFAULT_BOARD_WIDTH = 15;
-	public static final int DEFAULT_BOX_NUMBER = 10;
+	public static final int DEFAULT_BOARD_LENGTH = 10;
+	public static final int DEFAULT_BOARD_WIDTH = 50;
+	public static final int DEFAULT_BOX_NUMBER = 5;
 	public static final int DEFAULT_ENEMY_NUMBER = 5;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
@@ -91,6 +90,7 @@ public class Board extends Thread{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
+		
 		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
 		players.add(player);
 	}
@@ -141,7 +141,6 @@ public class Board extends Thread{
 		}
 		return false;
 	}
-	
 	/***********************************
 	 * Vlad addition
 	 **********************************/
@@ -159,24 +158,24 @@ public class Board extends Thread{
 	public void printBoard(){
 		for(int j=0;j<Board.DEFAULT_BOARD_LENGTH;j++){
 			for(int i=0;i<Board.DEFAULT_BOARD_WIDTH;i++){
-				if(this.hasObstacleAt(i,j)){
-					str += 'O';
-				}else if(this.hasBoxAt(i,j)){
-					str += 'B';
-				}else if(this.hasEnemyAt(i,j)){
-					str += 'E';
-				}else if(this.hasPlayerAt(i,j)){
-					str += 'P';
-				}else if(this.hasBombAt(i,j)){
-					str += 'X';
-				}else if(this.hasDoorAt(i,j)){
-					str += 'D';
+				if(hasObstacleAt(i,j)){
+					System.out.print("O");
+				}else if(hasBoxAt(i,j)){
+					System.out.print("B");
+				}else if(hasEnemyAt(i,j)){
+					System.out.print("E");
+				}else if(hasPlayerAt(i,j)){
+					System.out.print("P");
+				}else if(hasBombAt(i,j)){
+					System.out.print("X");
+				}else if(hasDoorAt(i,j)){
+					System.out.print("D");	
 				}else{
-					str += ' ';
+					System.out.print(" ");
 				}
 			}
 			System.out.println();
 		}
 	}
-	
+		
 }

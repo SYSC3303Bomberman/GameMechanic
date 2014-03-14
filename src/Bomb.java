@@ -1,4 +1,3 @@
-
 public class Bomb extends Thread{
 
 	private Board board;

@@ -1,4 +1,3 @@
-
 public class Enemy extends Thread{
 
 	private Board board;

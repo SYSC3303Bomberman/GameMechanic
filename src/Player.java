@@ -9,8 +9,10 @@ public class Player extends Thread{
 	private int x, y;
 	private int bombsMaxNumber;
 	private int bombsNumber;
-	private char command;	//command is the character received from clinet
+	private String command;	//command is the character received from clinet
 
+	public Player(){}
+	
 	public Player(Board board, int x, int y, SocketAddress clientAddress){
 		this.x = x;
 		this.y = y;
@@ -32,10 +34,10 @@ public class Player extends Thread{
 		return bombsNumber;		
 	}
 
-		public SocketAddress getPlayerAddress(){
+	public SocketAddress getPlayerAddress(){
 		return this.clientAddress;
 	}
-
+	
 	/* method to convert character command to movement*/	
 	public void move(String movement){
 		command = movement;
@@ -51,7 +53,7 @@ public class Player extends Thread{
 			this.placeBomb();
 		}
 	}
-
+	
 	public void moveUp(){
 		if(x > 0){
 			if (board.hasDoorAt((x-1),y)&&board.enemies.size()==0) {
