@@ -1,18 +1,21 @@
+import java.net.SocketAddress;
 import java.util.ArrayList;
 
 
 public class Player {
 
+	SocketAddress clientAddress;
 	private Board board;
 	private int x, y;
-	private int bombMaxNumber;
+	private int bombsMaxNumber;
 	private int bombsNumber;
 	private char command;	//command is the character received from clinet
 
-	public Player(Board board, int x, int y){
+	public Player(Board board, int x, int y, SocketAddress clientAddress){
 		this.x = x;
 		this.y = y;
 		this.board = board;
+		this.clientAddress = clientAddress;
 		bombsMaxNumber = 1;
 		bombsNumber = 1;
 	}
