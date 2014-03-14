@@ -34,14 +34,7 @@ public class Bomb extends Thread{
 	}
 
 	public void burn(int x, int y){
-		if (board.hasPlayerAt(x, y)) {
-			//player died
-			for (int i = 0; i < board.players.size() ; i++ ) {
-				if ((board.players.get(i).getX()==x)&&(board.players.get(i).getY()==y)) {
-					board.players.remove(i);
-				}
-			}
-		}else if (board.hasBoxAt(x, y)) {
+		if (board.hasBoxAt(x, y)) {
 			//box destroyed
 			for (int i = 0; i < board.boxes.size() ; i++ ) {
 				if ((board.boxes.get(i).getX()==x)&&(board.boxes.get(i).getY()==y)) {
