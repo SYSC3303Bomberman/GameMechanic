@@ -1,5 +1,14 @@
 GameMechanic
 ============
+March 13th 2014
+
+Initial a small board for test.
+One player and one enemy.
+Multiple boxes to limit enemy movement so can kill it quickly.
+Game process depends on increment() after input from player.
+
+ALL METHODS WORK FINE.
+
 March 12th 2014
 
 All classes added. (Box, Enemy are new, total 7 classes)
