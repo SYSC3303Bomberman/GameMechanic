@@ -4,33 +4,41 @@ import java.util.Random;
 
 public class Board {
 
-	public static final int DEFAULT_BOARD_LENGTH = 21;
-	public static final int DEFAULT_BOARD_WIDTH = 15;
-	public static final int DEFAULT_BOX_NUMBER = 10;
-	public static final int DEFAULT_ENEMY_NUMBER = 5;
-	private Door door;
-	private ArrayList<Obstacle> obstacles;
-	private ArrayList<Box> boxes;
-	private ArrayList<Enemy> enemies;
-	private ArrayList<Player> players;
-	private ArrayList<Bomb> bombs;
+	public static final int DEFAULT_BOARD_LENGTH = 7;
+	public static final int DEFAULT_BOARD_WIDTH = 5;
+	public static final int DEFAULT_BOX_NUMBER = 5;
+	public static final int DEFAULT_ENEMY_NUMBER = 1;
+	public Door door;
+	public ArrayList<Obstacle> obstacles;
+	public ArrayList<Box> boxes;
+	public ArrayList<Enemy> enemies;
+	public ArrayList<Player> players;
+	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
 
 	public Board(){
-		for (int j = 0; j < DEFAULT_BOARD_LENGTH; j++) {
+		obstacles = new ArrayList<Obstacle>();
+		boxes = new ArrayList<Box>();
+		enemies = new ArrayList<Enemy>();
+		players = new ArrayList<Player>();
+		bombs = new ArrayList<Bomb>();
+		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
+		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
 			this.addObstacle((DEFAULT_BOARD_WIDTH-1), j);
 		}
+		/* ADD OBSTACLES ON RIGHT AND LEFT EDGES */
 		for (int i = 0; i < DEFAULT_BOARD_WIDTH ; i++) {
 			this.addObstacle(i, 0);
 			this.addObstacle(i, (DEFAULT_BOARD_LENGTH-1));
 		}
+		/* ADD ALL OTHER OBSTACLES */
 		for (int i = 2; i < DEFAULT_BOARD_WIDTH ; i+=2) {
 			for (int j = 2; j < DEFAULT_BOARD_LENGTH; j+=2) {
 				this.addObstacle(i, j);
 			}
 		}
-		/* OBSTACLES INITIALIZATION DONE*/
+		/* OBSTACLES INITIALIZATION DONE */
 
 		Random ran = new Random();
 		do{
@@ -38,9 +46,9 @@ public class Board {
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY));
 		door = new Door(this, tempX, tempY);	//door places at random place
-		/* DOOR INITIALIZATION DONE*/
+		/* DOOR INITIALIZATION DONE */
 		this.addBox(tempX, tempY);
-		/* DOOR IS COVERED BY ONE BOX*/
+		/* DOOR IS COVERED BY ONE BOX */
 		for(int i = 1; i < DEFAULT_BOX_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -48,7 +56,7 @@ public class Board {
 			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY));
 			this.addBox(tempX, tempY);	//enemies start at random places
 		}
-		/* BOX INITIALIZATION DONE*/
+		/* BOX INITIALIZATION DONE */
 		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -56,9 +64,10 @@ public class Board {
 			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY));
 			this.addEnemy(tempX, tempY);	//boxes place at ranom places
 		}
-		/* ENEMY INITIALIZATION DONE*/
+		/* ENEMY INITIALIZATION DONE */
 		/* Obsatacles,door boxes, enemies can be displayed on GUI*/
 	}
+
 	public void addObstacle(int x, int y){
 		Obstacle obstacle = new Obstacle(this, x, y);
 		obstacles.add(obstacle);
@@ -88,11 +97,6 @@ public class Board {
 		bombs.add(bomb);
 	}
 
-	public void bombExplode(Bomb bomb){
-		bomb.getPlayer().loadBomb();	// player loads one bomb at the time his bomb explodes
-		bomb.explode();
-	}
-
 	public boolean hasDoorAt(int x, int y){
 		if((door.getX() == x)&&(door.getY() == y)){
 			return true;
@@ -109,7 +113,7 @@ public class Board {
 	}
 
 	public boolean hasBoxAt(int x, int y){
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < boxes.size(); i++){
 			if((boxes.get(i).getX() == x)&&(boxes.get(i).getY() == y)){return true;}
 		}
 		return false;
@@ -130,10 +134,65 @@ public class Board {
 	}
 	
 	public boolean hasBombAt(int x, int y){
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < bombs.size(); i++){
 			if((bombs.get(i).getX() == x)&&(bombs.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
 	
+	/* ALL BELOW FOR TEST */
+	public void increment(){
+		for(int i = 0; i < enemies.size(); i++){	
+			enemies.get(i).increment();
+		}	
+		for(int i = 0; i < players.size(); i++){	
+			players.get(i).increment();
+		}
+		for(int i = 0; i < bombs.size(); i++){	
+			bombs.get(i).increment();
+		}
+	}
+
+	public String toString(){
+		String str = "";
+		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
+			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
+				if(this.hasObstacleAt(i,j)){
+					str += 'O';
+				}else if(this.hasBoxAt(i,j)){
+					str += 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					str += 'E';
+				}else if(this.hasPlayerAt(i,j)){
+					str += 'P';
+				}else if(this.hasBombAt(i,j)){
+					str += 'X';
+				}else if(this.hasDoorAt(i,j)){
+					str += 'D';
+				}else{
+					str += ' ';
+				}
+			}
+			str += '\n';
+		}
+		return str;
+	}
+
+	public void print(){
+		System.out.println(this.toString());
+	}
+
+	public void play(){
+		this.addPlayer();
+		while(players.size()!=0){
+			this.print();
+			this.increment();
+		}
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Board board = new Board();		
+		board.play();
+	}
+	/* ALL ABOVE FOR TEST */
 }

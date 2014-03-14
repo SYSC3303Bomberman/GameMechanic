@@ -1,17 +1,38 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Player {
 
 	private Board board;
 	private int x, y;
-	private int bombMaxNumber;
+	private int bombsMaxNumber;
 	private int bombsNumber;
+	private char command;	//command is the character received from clinet
 
 	public Player(Board board, int x, int y){
 		this.x = x;
 		this.y = y;
 		this.board = board;
+		bombsMaxNumber = 1;
+		bombsNumber = 1;
+	}
+
+	/* method to convert character command to movement*/
+	public void act(){
+		if ( command == 'u') {
+			this.moveUp();
+		}else if ( command == 'd') {
+			this.moveDown();
+		}else if ( command == 'r') {
+			this.moveRight();
+		}else if ( command == 'l') {
+			this.moveLeft();
+		}else if ( command == 'p') {
+			this.placeBomb();
+		}else if ( command == 's') {
+			//stay for test
+		}
 	}
 
 	public int getX(){
@@ -28,7 +49,11 @@ public class Player {
 
 	public void moveUp(){
 		if(x > 0){
-			if(!board.hasPlayerAt((x-1),y)){
+			if (board.hasDoorAt((x-1),y)&&board.enemies.size()==0) {
+				System.out.println("CONGRATULATIONS");
+				board.players.clear();
+			}
+			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)){
 				x--;
 			}
 		}
@@ -36,7 +61,11 @@ public class Player {
 
 	public void moveDown(){
 		if(x < Board.DEFAULT_BOARD_WIDTH){
-			if(!board.hasPlayerAt((x+1),y)){
+			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
+				System.out.println("CONGRATULATIONS");
+				board.players.clear();
+			}
+			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
 				x++;
 			}
 		}
@@ -44,7 +73,11 @@ public class Player {
 
 	public void moveRight(){
 		if(x < Board.DEFAULT_BOARD_LENGTH){
-			if(!board.hasPlayerAt(x,(y+1))){
+			if (board.hasDoorAt(x,(y+1))&&board.enemies.size()==0) {
+				System.out.println("CONGRATULATIONS");
+				board.players.clear();
+			}
+			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
 				y++;
 			}
 		}
@@ -52,7 +85,11 @@ public class Player {
 
 	public void moveLeft(){
 		if(y > 0){
-			if(!board.hasPlayerAt(x,(y-1))){
+			if (board.hasDoorAt(x,(y-1))&&board.enemies.size()==0) {
+				System.out.println("CONGRATULATIONS");
+				board.players.clear();
+			}
+			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
 				y--;
 			}
 		}
@@ -69,5 +106,13 @@ public class Player {
 			board.addBomb(bomb);
 		}
 	}
+	/* ALL BELOW FOR TEST */
+	public void increment(){
+		System.out.println("\"u\" for up, \"d\" for down, \"r\" for right, \"l\" for left, \"s\" for stay, \"p\" for place bomb:");
+		Scanner scanner = new Scanner(System.in);
+		this.command = scanner.next().charAt(0);
+		this.act();
+	}
+	/* ALL ABOVE FOR TEST */
 
 }
