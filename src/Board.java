@@ -164,22 +164,12 @@ public class Board extends Thread {
 	}
 
 	public boolean hasPowerUpAt(int x, int y){
-		for(int i = 0; i < bombs.size(); i++){
+		for(int i = 0; i < powerups.size(); i++){
 			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
 	
-	/* ALL BELOW FOR TEST */
-	public void increment() throws InterruptedException{	
-		for(int i = 0; i < players.size(); i++){	
-			players.get(i).increment();
-		}
-		for(int i = 0; i < bombs.size(); i++){	
-			bombs.get(i).increment();
-		}
-	}
-
 	public String toString(){
 		String str = "";
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
@@ -207,31 +197,21 @@ public class Board extends Thread {
 		return str;
 	}
 
-	public void print(){
+	public void printBoard(){
 		System.out.println(this.toString());
 	}
-
-	public void play() throws InterruptedException{
-		this.addPlayer();
-		while(players.size()!=0){
-			this.print();
-			Thread.sleep(100);
-			this.increment();
-		}
-		for(int i = 0; i < enemies.size(); i++){
-			enemies.get(i).stop();
-		}
-		for(int i = 0; i < bombs.size(); i++){
-			bombs.get(i).stop();
-		}
-		for(int i = 0; i <players.size(); i++){
-			players.get(i).stop();
-		}
+	
+	/***********************************
+	 * Vlad addition
+	 **********************************/
+	public Player hasPlayer(SocketAddress clientAddress){
+		Player player = new Player();
+		for(int i=0; i<players.size();i++){
+			player = players.get(i);
+			if(player.getPlayerAddress().equals(clientAddress)){
+				break;
+			}
+		return player;
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		Board board = new Board();		
-		board.play();
-	}
-	/* ALL ABOVE FOR TEST */
 }
