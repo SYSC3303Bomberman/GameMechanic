@@ -60,6 +60,14 @@ public class Player extends Thread{
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt((x-1),y)) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==(x-1))&&(board.powerups.get(i).getY()==y)) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)){
 				x--;
 			}
@@ -71,6 +79,14 @@ public class Player extends Thread{
 			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
+			}
+			if (board.hasPowerUpAt((x+1),y)) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==(x+1))&&(board.powerups.get(i).getY()==y)) {
+						board.powerups.remove(i);
+					}
+				}
 			}
 			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
 				x++;
@@ -84,6 +100,14 @@ public class Player extends Thread{
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt(x,(y+1))) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y+1))) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
 				y++;
 			}
@@ -96,10 +120,22 @@ public class Player extends Thread{
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt(x,(y-1))) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y-1))) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
 				y--;
 			}
 		}
+	}
+
+	public void powerUp(){
+		bombsMaxNumber++;
 	}
 
 	public void loadBomb(){
