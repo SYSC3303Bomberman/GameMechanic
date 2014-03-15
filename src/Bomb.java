@@ -64,8 +64,8 @@ public class Bomb {
 	/* ALL BELOW FOR TEST */
 	public void increment(){
 		timer++;
-		if (timer == 4) {	//time of create = 1
-			this.explode();	//after 3 steps explodes
+		if (timer == 7) {	//time of create = 1
+			this.explode();	//after 6 steps explodes
 		}
 	}
 	/* ALL ABOVE FOR TEST */

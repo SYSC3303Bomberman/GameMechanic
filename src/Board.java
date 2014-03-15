@@ -4,12 +4,14 @@ import java.util.Random;
 
 public class Board {
 
-	public static final int DEFAULT_BOARD_LENGTH = 7;
-	public static final int DEFAULT_BOARD_WIDTH = 5;
+	public static final int DEFAULT_BOARD_LENGTH = 9;
+	public static final int DEFAULT_BOARD_WIDTH = 9;
+	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 5;
 	public static final int DEFAULT_ENEMY_NUMBER = 1;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
+	public ArrayList<PowerUp> powerups;
 	public ArrayList<Box> boxes;
 	public ArrayList<Enemy> enemies;
 	public ArrayList<Player> players;
@@ -18,6 +20,7 @@ public class Board {
 
 	public Board(){
 		obstacles = new ArrayList<Obstacle>();
+		powerups = new ArrayList<PowerUp>();
 		boxes = new ArrayList<Box>();
 		enemies = new ArrayList<Enemy>();
 		players = new ArrayList<Player>();
@@ -49,7 +52,18 @@ public class Board {
 		/* DOOR INITIALIZATION DONE */
 		this.addBox(tempX, tempY);
 		/* DOOR IS COVERED BY ONE BOX */
-		for(int i = 1; i < DEFAULT_BOX_NUMBER; i++){
+		
+		for(int i = 0; i < DEFAULT_POWERUP_NUMBER; i++){
+			do{
+				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
+				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
+			}while(this.hasObstacleAt(tempX, tempY)||this.hasDoorAt(tempX, tempY));
+			this.addPowerUp(tempX, tempY);	//enemies start at random places
+			this.addBox(tempX, tempY);
+		}
+		/* POWERUP INITIALIZATION DONE */
+		
+		for(int i = DEFAULT_POWERUP_NUMBER; i < DEFAULT_BOX_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -57,6 +71,7 @@ public class Board {
 			this.addBox(tempX, tempY);	//enemies start at random places
 		}
 		/* BOX INITIALIZATION DONE */
+		
 		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -65,6 +80,7 @@ public class Board {
 			this.addEnemy(tempX, tempY);	//boxes place at ranom places
 		}
 		/* ENEMY INITIALIZATION DONE */
+		
 		/* Obsatacles,door boxes, enemies can be displayed on GUI*/
 	}
 
@@ -72,6 +88,11 @@ public class Board {
 		Obstacle obstacle = new Obstacle(this, x, y);
 		obstacles.add(obstacle);
 	}	
+	
+	public void addPowerUp(int x, int y){
+		PowerUp powerup = new PowerUp(this, x, y);
+		powerups.add(powerup);
+	}
 
 	public void addBox(int x, int y){
 		Box box = new Box(this, x, y);
@@ -140,20 +161,14 @@ public class Board {
 		return false;
 	}
 	
-	/* ALL BELOW FOR TEST */
-	public void increment(){
-		for(int i = 0; i < enemies.size(); i++){	
-			enemies.get(i).increment();
-		}	
-		for(int i = 0; i < players.size(); i++){	
-			players.get(i).increment();
+	public boolean hasPowerUpAt(int x, int y){
+		for(int i = 0; i < powerups.size(); i++){
+			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
 		}
-		for(int i = 0; i < bombs.size(); i++){	
-			bombs.get(i).increment();
-		}
+		return false;
 	}
-
-	public String toString(){
+	
+		public String toString(){
 		String str = "";
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
@@ -167,6 +182,8 @@ public class Board {
 					str += 'P';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
+				}else if(this.hasPowerUpAt(i,j)){
+					str += 'U';
 				}else if(this.hasDoorAt(i,j)){
 					str += 'D';
 				}else{
@@ -178,14 +195,27 @@ public class Board {
 		return str;
 	}
 
-	public void print(){
+	public void printBoard(){
 		System.out.println(this.toString());
+	}
+	
+	/* ALL BELOW FOR TEST */
+	public void increment(){
+		for(int i = 0; i < enemies.size(); i++){	
+			enemies.get(i).increment();
+		}	
+		for(int i = 0; i < players.size(); i++){	
+			players.get(i).increment();
+		}
+		for(int i = 0; i < bombs.size(); i++){	
+			bombs.get(i).increment();
+		}
 	}
 
 	public void play(){
 		this.addPlayer();
 		while(players.size()!=0){
-			this.print();
+			this.printBoard();
 			this.increment();
 		}
 	}
