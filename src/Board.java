@@ -2,29 +2,32 @@ import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Board extends Thread{
 
-	public static final int DEFAULT_BOARD_LENGTH = 10;
-	public static final int DEFAULT_BOARD_WIDTH = 50;
-	public static final int DEFAULT_BOX_NUMBER = 5;
+public class Board extends Thread {
+
+	public static final int DEFAULT_BOARD_LENGTH = 21;
+	public static final int DEFAULT_BOARD_WIDTH = 15;
+	public static final int DEFAULT_POWERUP_NUMBER = 3;
+	public static final int DEFAULT_BOX_NUMBER = 15;
 	public static final int DEFAULT_ENEMY_NUMBER = 5;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
+	public ArrayList<PowerUp> powerups;
 	public ArrayList<Box> boxes;
 	public ArrayList<Enemy> enemies;
 	public ArrayList<Player> players;
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
 
-	public Board(){
-		/*INITIAL ALL ARRAYLISTS*/
+	public Board() throws InterruptedException {
 		obstacles = new ArrayList<Obstacle>();
+		powerups = new ArrayList<PowerUp>();
 		boxes = new ArrayList<Box>();
 		enemies = new ArrayList<Enemy>();
 		players = new ArrayList<Player>();
 		bombs = new ArrayList<Bomb>();
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
-		for (int j = 0; j < DEFAULT_BOARD_LENGTH; j++) {
+		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
 			this.addObstacle((DEFAULT_BOARD_WIDTH-1), j);
 		}
@@ -39,25 +42,37 @@ public class Board extends Thread{
 				this.addObstacle(i, j);
 			}
 		}
-		/* OBSTACLES INITIALIZATION DONE*/
+		/* OBSTACLES INITIALIZATION DONE */
 
 		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
-		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY));
+		}while(this.hasObstacleAt(tempX, tempY));
 		door = new Door(this, tempX, tempY);	//door places at random place
-		/* DOOR INITIALIZATION DONE*/
+		/* DOOR INITIALIZATION DONE */
 		this.addBox(tempX, tempY);
-		/* DOOR IS COVERED BY ONE BOX*/
-		for(int i = 1; i < DEFAULT_BOX_NUMBER; i++){
+		/* DOOR IS COVERED BY ONE BOX */
+
+		for(int i = 1; i < DEFAULT_POWERUP_NUMBER; i++){
+			do{
+				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
+				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
+			}while(this.hasObstacleAt(tempX, tempY)||this.hasDoorAt(tempX, tempY));
+			this.addPowerUp(tempX, tempY);	//enemies start at random places
+			this.addBox(tempX, tempY);
+		}
+		/* POWERUP INITIALIZATION DONE */
+
+		for(int i = (1 + DEFAULT_POWERUP_NUMBER); i < DEFAULT_BOX_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY));
 			this.addBox(tempX, tempY);	//enemies start at random places
 		}
-		/* BOX INITIALIZATION DONE*/
+		/* BOX INITIALIZATION DONE */
+
 		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -65,8 +80,9 @@ public class Board extends Thread{
 			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY));
 			this.addEnemy(tempX, tempY);	//boxes place at ranom places
 		}
-		/* ENEMY INITIALIZATION DONE*/
-		/* Obsatacles,door boxes, enemies can be displayed on GUI*/
+		/* ENEMY INITIALIZATION DONE */
+
+		/* Obsatacles,door, powerups, boxes, enemies can be displayed on GUI*/
 	}
 
 	public void addObstacle(int x, int y){
@@ -74,12 +90,17 @@ public class Board extends Thread{
 		obstacles.add(obstacle);
 	}	
 
+	public void addPowerUp(int x, int y){
+		PowerUp powerup = new PowerUp(this, x, y);
+		powerups.add(powerup);
+	}
+
 	public void addBox(int x, int y){
 		Box box = new Box(this, x, y);
 		boxes.add(box);
 	}
 
-	public void addEnemy(int x, int y){
+	public void addEnemy(int x, int y) throws InterruptedException{
 		Enemy enemy = new Enemy(this, x, y);
 		enemies.add(enemy);
 	}
@@ -90,7 +111,6 @@ public class Board extends Thread{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		
 		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
 		players.add(player);
 	}
@@ -115,7 +135,7 @@ public class Board extends Thread{
 	}
 
 	public boolean hasBoxAt(int x, int y){
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < boxes.size(); i++){
 			if((boxes.get(i).getX() == x)&&(boxes.get(i).getY() == y)){return true;}
 		}
 		return false;
@@ -136,23 +156,17 @@ public class Board extends Thread{
 	}
 	
 	public boolean hasBombAt(int x, int y){
-		for(int i = 0; i < players.size(); i++){
+		for(int i = 0; i < bombs.size(); i++){
 			if((bombs.get(i).getX() == x)&&(bombs.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
-	/***********************************
-	 * Vlad addition
-	 **********************************/
-	public Player hasPlayer(SocketAddress clientAddress){
-		Player player = new Player();
-		for(int i=0; i<players.size();i++){
-			player = players.get(i);
-			if(player.getPlayerAddress().equals(clientAddress)){
-				break;
-			}
+
+	public boolean hasPowerUpAt(int x, int y){
+		for(int i = 0; i < powerups.size(); i++){
+			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
 		}
-		return player;
+		return false;
 	}
 	
 	public String toString(){
@@ -169,6 +183,8 @@ public class Board extends Thread{
 					str += 'P';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
+				}else if(this.hasPowerUpAt(i,j)) {
+					str += 'U';
 				}else if(this.hasDoorAt(i,j)){
 					str += 'D';
 				}else{
@@ -183,5 +199,19 @@ public class Board extends Thread{
 	public void printBoard(){
 		System.out.println(this.toString());
 	}
-		
+	
+	/***********************************
+	 * Vlad addition
+	 **********************************/
+	public Player hasPlayer(SocketAddress clientAddress){
+		Player player = new Player();
+		for(int i=0; i<players.size();i++){
+			player = players.get(i);
+			if(player.getPlayerAddress().equals(clientAddress)){
+				break;
+			}
+		}
+		return player;
+	}
+
 }
