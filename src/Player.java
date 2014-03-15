@@ -136,6 +136,7 @@ public class Player extends Thread{
 
 	public void powerUp(){
 		bombsMaxNumber++;
+		this.loadBomb();
 	}
 
 	public void loadBomb(){

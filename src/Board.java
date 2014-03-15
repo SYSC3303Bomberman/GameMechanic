@@ -102,12 +102,11 @@ public class Board extends Thread {
 
 	public void addEnemy(int x, int y) throws InterruptedException{
 		Enemy enemy = new Enemy(this, x, y);
-		enemy.start();
 		enemies.add(enemy);
 	}
 
-	public void addPlayer(){
-		Random ran = new Random(SocketAddress clientAddress);
+	public void addPlayer(SocketAddress clientAddress){
+		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -211,6 +210,7 @@ public class Board extends Thread {
 			if(player.getPlayerAddress().equals(clientAddress)){
 				break;
 			}
+		}
 		return player;
 	}
 
