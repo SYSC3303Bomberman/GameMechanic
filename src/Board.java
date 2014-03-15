@@ -1,3 +1,4 @@
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -106,12 +107,12 @@ public class Board extends Thread {
 	}
 
 	public void addPlayer(){
-		Random ran = new Random();
+		Random ran = new Random(SocketAddress clientAddress);
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		Player player = new Player(this, tempX, tempY);	//player starts at random place
+		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
 		players.add(player);
 	}
 
