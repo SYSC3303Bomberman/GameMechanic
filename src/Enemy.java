@@ -6,9 +6,7 @@ public class Enemy extends Thread{
 	public static final int DEFAULT_ENEMY_MOVE_PERIOD = 200;
 	private Board board;
 	private int x, y;
-	/* ALL BELOW FOR TEST */
 	private int direction;
-	/* ALL ABOVE FOR TEST */
 
 	public Enemy(Board board, int x, int y){
 		this.x = x;
@@ -108,6 +106,20 @@ public class Enemy extends Thread{
 		}
 	}
 	
+	public void move(){
+		Random ran = new Random();
+		this.direction = ran.nextInt(4);
+		if ( direction == 0) {
+			this.moveUp();
+		}else if ( direction == 1) {
+			this.moveDown();
+		}else if ( direction == 2) {
+			this.moveRight();
+		}else if ( direction == 3) {
+			this.moveLeft();
+		}
+	}
+	
 	@Override
 	public void run()
 	{
@@ -128,20 +140,6 @@ public class Enemy extends Thread{
 		this.move();
 	}
 	*/
-
-	public void move(){
-		Random ran = new Random();
-		this.direction = ran.nextInt(4);
-		if ( direction == 0) {
-			this.moveUp();
-		}else if ( direction == 1) {
-			this.moveDown();
-		}else if ( direction == 2) {
-			this.moveRight();
-		}else if ( direction == 3) {
-			this.moveLeft();
-		}
-	}
 	/* ALL ABOVE FOR TEST */
 
 }
