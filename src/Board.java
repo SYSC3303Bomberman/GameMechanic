@@ -10,6 +10,7 @@ public class Board extends Thread {
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 15;
 	public static final int DEFAULT_ENEMY_NUMBER = 5;
+	public static final int DEFAULT_SCREEN_REFRESH_PERIOD = 100;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
 	public ArrayList<PowerUp> powerups;
@@ -103,6 +104,7 @@ public class Board extends Thread {
 	public void addEnemy(int x, int y) throws InterruptedException{
 		Enemy enemy = new Enemy(this, x, y);
 		enemies.add(enemy);
+		enemy.start();
 	}
 
 	public void addPlayer(SocketAddress clientAddress){
@@ -117,6 +119,7 @@ public class Board extends Thread {
 
 	public void addBomb(Bomb bomb){
 		bombs.add(bomb);
+		bomb.start();
 	}
 
 	public boolean hasDoorAt(int x, int y){

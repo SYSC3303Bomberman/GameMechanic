@@ -1,7 +1,11 @@
+import java.util.Random;
+
 public class Enemy extends Thread{
 
+	public static final int DEFAULT_ENEMY_MOVE_PERIOD = 200;
 	private Board board;
 	private int x, y;
+	private int direction;
 
 	public Enemy(Board board, int x, int y){
 		this.x = x;
@@ -49,4 +53,30 @@ public class Enemy extends Thread{
 		}
 	}
 	
+	@Override
+	 public void run(){
+		while(true){
+		 	try {
+		 		Thread.sleep(DEFAULT_ENEMY_MOVE_PERIOD);
+	 		} catch (InterruptedException e) {
+		 		// TODO Auto-generated catch block
+	 			e.printStackTrace();
+	 		}
+	 		this.move();
+	 	}
+	 }
+	
+	public void move(){
+		Random ran = new Random();
+		this.direction = ran.nextInt(4);
+  		if ( direction == 0) {
+  			this.moveUp();
+		}else if ( direction == 1) {
+			this.moveDown();
+		}else if ( direction == 2) {
+			this.moveRight();
+		}else if ( direction == 3) {
+  			this.moveLeft();
+  		}
+  	}
 }
