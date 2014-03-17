@@ -1,6 +1,7 @@
 
 public class Bomb extends Thread {
 
+	public static final int DEFAULT_BOMB_EXPOLSION_TIME = 800;
 	private Board board;
 	private int x, y;
 	private Player player;
@@ -35,6 +36,7 @@ public class Bomb extends Thread {
 		this.burn(x, (y - 1));
 		player.loadBomb();	// player loads one bomb at the time his bomb explodes
 		board.bombs.remove(this);
+		this.stop();
 	}
 
 	public void burn(int x, int y){
@@ -56,19 +58,36 @@ public class Bomb extends Thread {
 			//enemy killed
 			for (int i = 0; i < board.enemies.size() ; i++ ) {
 				if ((board.enemies.get(i).getX()==x)&&(board.enemies.get(i).getY()==y)) {
+					board.enemies.get(i).stop();
 					board.enemies.remove(i);
 				}
 			}
 		}
 	}
-	/* ALL BELOW FOR TEST */
-	public void increment() throws InterruptedException{
-		timer++;
-		Thread.sleep(200);
-		if (timer == 4) {	//time of create = 1
-			this.explode();	//after 3 steps explodes
+	
+	@Override
+	public void run()
+	{
+		while(true){
+			try {
+				Thread.sleep(DEFAULT_BOMB_EXPOLSION_TIME);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.explode();
 		}
 	}
+	
+	/* ALL BELOW FOR TEST */
+	/*
+	public void increment(){
+		timer++;
+		if (timer == 7) {	//time of create = 1
+			this.explode();	//after 6 steps explodes
+		}
+	}
+	*/
 	/* ALL ABOVE FOR TEST */
 }
 

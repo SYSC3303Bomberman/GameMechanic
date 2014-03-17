@@ -1,8 +1,9 @@
 import java.util.Random;
 
 
-public class Enemy extends Thread {
-
+public class Enemy extends Thread{
+	
+	public static final int DEFAULT_ENEMY_MOVE_PERIOD = 200;
 	private Board board;
 	private int x, y;
 	/* ALL BELOW FOR TEST */
@@ -31,6 +32,12 @@ public class Enemy extends Thread {
 						board.players.remove(i);
 					}
 				}
+				if (board.players.size()==0){
+					System.out.println("GAME OVER");
+					for (int i = 0; i < board.enemies.size() ; i++ ) {
+						board.enemies.get(i).stop();
+					}
+				}
 			}
 			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasBombAt((x-1),y)){
 				x--;
@@ -46,8 +53,14 @@ public class Enemy extends Thread {
 						board.players.remove(i);
 					}
 				}
+				if (board.players.size()==0){
+					System.out.println("GAME OVER");
+					for (int i = 0; i < board.enemies.size() ; i++ ) {
+						board.enemies.get(i).stop();
+					}
+				}
 			}
-			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasBombAt((x+1),y)){
+			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
 				x++;
 			}
 		}
@@ -61,8 +74,14 @@ public class Enemy extends Thread {
 						board.players.remove(i);
 					}
 				}
+				if (board.players.size()==0){
+					System.out.println("GAME OVER");
+					for (int i = 0; i < board.enemies.size() ; i++ ) {
+						board.enemies.get(i).stop();
+					}
+				}
 			}
-			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
+			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
 				y++;
 			}
 		}
@@ -76,22 +95,43 @@ public class Enemy extends Thread {
 						board.players.remove(i);
 					}
 				}
+				if (board.players.size()==0){
+					System.out.println("GAME OVER");
+					for (int i = 0; i < board.enemies.size() ; i++ ) {
+						board.enemies.get(i).stop();
+					}
+				}					
 			}
-			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
+			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
 				y--;
 			}
 		}
 	}
-
-	/* ALL BELOW FOR TEST */
-	public void increment() throws InterruptedException{
-		Random ran = new Random();
-		this.direction = ran.nextInt(4);
-		this.move();
-		Thread.sleep(200);
+	
+	@Override
+	public void run()
+	{
+		while(true){
+			try {
+				Thread.sleep(DEFAULT_ENEMY_MOVE_PERIOD);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.move();
+		}	
 	}
 
+	/* ALL BELOW FOR TEST */
+	/*
+	public void increment(){
+		this.move();
+	}
+	*/
+
 	public void move(){
+		Random ran = new Random();
+		this.direction = ran.nextInt(4);
 		if ( direction == 0) {
 			this.moveUp();
 		}else if ( direction == 1) {

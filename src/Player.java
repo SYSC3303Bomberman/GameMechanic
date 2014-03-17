@@ -1,17 +1,14 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Player extends Thread implements KeyListener {
+public class Player extends Thread{
 
 	private Board board;
 	private int x, y;
 	private int bombsMaxNumber;
 	private int bombsNumber;
 	private char command;	//command is the character received from clinet
-	private char c;
 
 	public Player(Board board, int x, int y){
 		this.x = x;
@@ -22,7 +19,7 @@ public class Player extends Thread implements KeyListener {
 	}
 
 	/* method to convert character command to movement*/
-	public void act(){
+	public void move(){
 		if ( command == 'u') {
 			this.moveUp();
 		}else if ( command == 'd') {
@@ -56,6 +53,14 @@ public class Player extends Thread implements KeyListener {
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt((x-1),y)) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==(x-1))&&(board.powerups.get(i).getY()==y)) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)){
 				x--;
 			}
@@ -67,6 +72,14 @@ public class Player extends Thread implements KeyListener {
 			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
+			}
+			if (board.hasPowerUpAt((x+1),y)) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==(x+1))&&(board.powerups.get(i).getY()==y)) {
+						board.powerups.remove(i);
+					}
+				}
 			}
 			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
 				x++;
@@ -80,6 +93,14 @@ public class Player extends Thread implements KeyListener {
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt(x,(y+1))) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y+1))) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
 				y++;
 			}
@@ -92,12 +113,25 @@ public class Player extends Thread implements KeyListener {
 				System.out.println("CONGRATULATIONS");
 				board.players.clear();
 			}
+			if (board.hasPowerUpAt(x,(y-1))) {
+				this.powerUp();
+				for (int i = 0; i < board.powerups.size() ; i++ ) {
+					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y-1))) {
+						board.powerups.remove(i);
+					}
+				}
+			}
 			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
 				y--;
 			}
 		}
 	}
 
+	public void powerUp(){
+		bombsMaxNumber++;
+		bombsNumber++;
+	}
+	
 	public void loadBomb(){
 		bombsNumber++;
 	}
@@ -110,32 +144,12 @@ public class Player extends Thread implements KeyListener {
 		}
 	}
 	/* ALL BELOW FOR TEST */
-	public void increment() throws InterruptedException{
-		System.out.println("\"u\" for up, \"d\" for down, \"r\" for right, \"l\" for left, \"s\" for stay, \"p\" for place bomb:");
+	public void increment(){
+		//System.out.println("\"u\" for up, \"d\" for down, \"r\" for right, \"l\" for left, \"s\" for stay, \"p\" for place bomb:");
 		//Scanner scanner = new Scanner(System.in);
 		//this.command = scanner.next().charAt(0);
-		System.out.println(c);
-		this.act();
+		this.move();
 	}
-	
-	public void keyPressed(KeyEvent e) {
-		c = e.getKeyChar();
-		command = c;
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		c = e.getKeyChar();
-		command = c;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		c = e.getKeyChar();
-		command = c;		
-	}
-	
 	/* ALL ABOVE FOR TEST */
-	
 
 }
