@@ -1,5 +1,15 @@
 GameMechanic
 ============
+March 20th 2014
+Player:
+String: name added in constructor with a getPlayerName().
+Avoid override getName() in Thread.
+
+Board:
+form() to convert str to 2D array.
+
+-----------------------------------------------------------------------------------------------------------------
+
 March 13th 2014
 
 Player:
