@@ -5,6 +5,10 @@ March 20th 2014
 Board:
 form() to convert str to 2D array.
 this.form() has to be called in printBoard() and then print.
+distinguish(int x, int y) to detect which player is located at (x,y).
+Given different characters to different players.
+SINCE PLAYERS CAN NOT BE KILLED NOW.
+THE ORDER OF THEM IN THE ARRAYLIST WOULD NOT BE CHANGED UNTIL GAME DONE.
 
 -----------------------------------------------------------------------------------------------------------------
 
