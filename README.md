@@ -1,5 +1,13 @@
 GameMechanic
 ============
+March 20th 2014
+
+Board:
+form() to convert str to 2D array.
+this.form() has to be called in printBoard() and then print.
+
+-----------------------------------------------------------------------------------------------------------------
+
 March 13th 2014
 
 Player:
