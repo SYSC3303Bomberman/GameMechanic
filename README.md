@@ -8,6 +8,10 @@ Avoid override getName() in Thread.
 
 Board:
 form() to convert str to 2D array.
+distinguish(int x, int y) to detect which player is located at (x,y).
+Given different characters to different players.
+SINCE PLAYERS CAN NOT BE KILLED NOW.
+THE ORDER OF THEM IN THE ARRAYLIST WOULD NOT BE CHANGED UNTIL GAME DONE.
 
 -----------------------------------------------------------------------------------------------------------------
 
