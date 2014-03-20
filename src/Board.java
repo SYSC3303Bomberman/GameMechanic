@@ -5,7 +5,7 @@ import java.util.Random;
 public class Board extends Thread{
 
 	public static final int DEFAULT_BOARD_LENGTH = 9;
-	public static final int DEFAULT_BOARD_WIDTH = 9;
+	public static final int DEFAULT_BOARD_WIDTH = 11;
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 5;
 	public static final int DEFAULT_ENEMY_NUMBER = 3;
@@ -18,6 +18,7 @@ public class Board extends Thread{
 	public ArrayList<Player> players;
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
+	public char[][] table;
 
 	public Board(){
 		obstacles = new ArrayList<Obstacle>();
@@ -26,6 +27,7 @@ public class Board extends Thread{
 		enemies = new ArrayList<Enemy>();
 		players = new ArrayList<Player>();
 		bombs = new ArrayList<Bomb>();
+		table = new char[DEFAULT_BOARD_WIDTH][DEFAULT_BOARD_LENGTH];
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
@@ -198,8 +200,36 @@ public class Board extends Thread{
 		return str;
 	}
 
+	public void form(){
+		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
+			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
+				if(this.hasObstacleAt(i,j)){
+					table[i][j] = 'O';
+				}else if(this.hasBoxAt(i,j)){
+					table[i][j] = 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					table[i][j] = 'E';
+				}else if(this.hasPlayerAt(i,j)){
+					table[i][j] = 'P';
+				}else if(this.hasBombAt(i,j)){
+					table[i][j] = 'X';
+				}else if(this.hasPowerUpAt(i,j)) {
+					table[i][j] = 'U';
+				}else if(this.hasDoorAt(i,j)){
+					table[i][j] = 'D';
+				}else{
+					table[i][j] = ' ';
+				}
+			}
+		}
+	}
+
 	public void printBoard() throws InterruptedException{
-		System.out.println(this.toString());
+		//System.out.println(this.toString());
+		this.form();
+		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
+				System.out.println(table[i]);
+		}
 		Thread.sleep(DEFAULT_SCREEN_REFRESH_PERIOD);
 	}
 	
