@@ -66,7 +66,7 @@ public class Board extends Thread{
 		}
 		/* POWERUP INITIALIZATION DONE */
 		
-		for(int i = DEFAULT_POWERUP_NUMBER; i < DEFAULT_BOX_NUMBER; i++){
+		for(int i = DEFAULT_POWERUP_NUMBER+1; i < DEFAULT_BOX_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -173,8 +173,9 @@ public class Board extends Thread{
 		return false;
 	}
 	
-		public String toString(){
+	public String toString(){
 		String str = "";
+		int p;
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
@@ -184,7 +185,14 @@ public class Board extends Thread{
 				}else if(this.hasEnemyAt(i,j)){
 					str += 'E';
 				}else if(this.hasPlayerAt(i,j)){
-					str += 'P';
+					p = distinguish(i,j);
+					if (p==0) {
+						str += 'P';
+					}else if (p==1){
+						str += 'p';
+					}else{
+
+					}
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
 				}else if(this.hasPowerUpAt(i,j)){
@@ -201,6 +209,7 @@ public class Board extends Thread{
 	}
 
 	public void form(){
+		int p;
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
@@ -210,7 +219,14 @@ public class Board extends Thread{
 				}else if(this.hasEnemyAt(i,j)){
 					table[i][j] = 'E';
 				}else if(this.hasPlayerAt(i,j)){
-					table[i][j] = 'P';
+					p = distinguish(i,j);
+					if (p==0) {
+						table[i][j] = 'P';
+					}else if (p==1){
+						table[i][j] = 'p';
+					}else{
+
+					}
 				}else if(this.hasBombAt(i,j)){
 					table[i][j] = 'X';
 				}else if(this.hasPowerUpAt(i,j)) {
@@ -251,6 +267,7 @@ public class Board extends Thread{
 	}
 
 	public void play() throws InterruptedException{
+		this.addPlayer();
 		this.addPlayer();
 		while(players.size()!=0){
 			this.printBoard();
