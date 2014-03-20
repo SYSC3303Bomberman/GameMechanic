@@ -1,6 +1,7 @@
 GameMechanic
 ============
 March 20th 2014
+
 Player:
 String: name added in constructor with a getPlayerName().
 Avoid override getName() in Thread.
