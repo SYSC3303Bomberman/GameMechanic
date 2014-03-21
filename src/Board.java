@@ -19,6 +19,7 @@ public class Board {
 	private int tempX, tempY;
 
 	public Board(){
+
 		obstacles = new ArrayList<Obstacle>();
 		powerups = new ArrayList<PowerUp>();
 		boxes = new ArrayList<Box>();
@@ -52,7 +53,7 @@ public class Board {
 		/* DOOR INITIALIZATION DONE */
 		this.addBox(tempX, tempY);
 		/* DOOR IS COVERED BY ONE BOX */
-		
+
 		for(int i = 0; i < DEFAULT_POWERUP_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -62,8 +63,8 @@ public class Board {
 			this.addBox(tempX, tempY);
 		}
 		/* POWERUP INITIALIZATION DONE */
-		
-		for(int i = DEFAULT_POWERUP_NUMBER; i < DEFAULT_BOX_NUMBER; i++){
+
+		for(int i = DEFAULT_POWERUP_NUMBER+1; i < DEFAULT_BOX_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -71,7 +72,7 @@ public class Board {
 			this.addBox(tempX, tempY);	//enemies start at random places
 		}
 		/* BOX INITIALIZATION DONE */
-		
+
 		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
@@ -80,7 +81,7 @@ public class Board {
 			this.addEnemy(tempX, tempY);	//boxes place at ranom places
 		}
 		/* ENEMY INITIALIZATION DONE */
-		
+
 		/* Obsatacles,door boxes, enemies can be displayed on GUI*/
 	}
 
@@ -88,7 +89,7 @@ public class Board {
 		Obstacle obstacle = new Obstacle(this, x, y);
 		obstacles.add(obstacle);
 	}	
-	
+
 	public void addPowerUp(int x, int y){
 		PowerUp powerup = new PowerUp(this, x, y);
 		powerups.add(powerup);
@@ -139,28 +140,28 @@ public class Board {
 		}
 		return false;
 	}
-	
+
 	public boolean hasEnemyAt(int x, int y){
 		for(int i = 0; i < enemies.size(); i++){
 			if((enemies.get(i).getX() == x)&&(enemies.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
-	
+
 	public boolean hasPlayerAt(int x, int y){
 		for(int i = 0; i < players.size(); i++){
 			if((players.get(i).getX() == x)&&(players.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
-	
+
 	public boolean hasBombAt(int x, int y){
 		for(int i = 0; i < bombs.size(); i++){
 			if((bombs.get(i).getX() == x)&&(bombs.get(i).getY() == y)){return true;}
 		}
 		return false;
 	}
-	
+
 	public boolean hasPowerUpAt(int x, int y){
 		for(int i = 0; i < powerups.size(); i++){
 			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
@@ -168,8 +169,9 @@ public class Board {
 		return false;
 	}
 	
-		public String toString(){
+	public String toString(){
 		String str = "";
+		int p;
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
