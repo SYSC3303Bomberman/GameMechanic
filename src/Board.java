@@ -6,9 +6,9 @@ public class Board extends Thread{
 
 	public static final int DEFAULT_BOARD_LENGTH = 9;
 	public static final int DEFAULT_BOARD_WIDTH = 11;
-	public static final int DEFAULT_POWERUP_NUMBER = 3;
-	public static final int DEFAULT_BOX_NUMBER = 5;
-	public static final int DEFAULT_ENEMY_NUMBER = 3;
+	public static final int DEFAULT_POWERUP_NUMBER = 0;
+	public static final int DEFAULT_BOX_NUMBER = 1;
+	public static final int DEFAULT_ENEMY_NUMBER = 5;
 	public static final int DEFAULT_SCREEN_REFRESH_PERIOD = 100;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
@@ -281,6 +281,19 @@ public class Board extends Thread{
 		while(players.size()!=0){
 			this.printBoard();
 			this.increment();
+		}
+		this.gameOver();
+	}
+	
+	public void gameOver(){
+		for(int i = 0; i < enemies.size(); i++){	
+			enemies.get(i).stop();
+		}	
+		for(int i = 0; i < players.size(); i++){	
+			players.get(i).stop();
+		}
+		for(int i = 0; i < bombs.size(); i++){	
+			bombs.get(i).stop();
 		}
 	}
 
