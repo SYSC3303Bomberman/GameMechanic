@@ -173,6 +173,15 @@ public class Board extends Thread{
 		return false;
 	}
 	
+	public int distinguish(int x, int y){
+		for(int i = 0; i < players.size(); i++){
+			if((players.get(i).getX() == x)&&(players.get(i).getY() == y)){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public String toString(){
 		String str = "";
 		int p;
