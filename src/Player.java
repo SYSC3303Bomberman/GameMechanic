@@ -61,7 +61,7 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)){
+			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)&&!board.hasEnemyAt((x-1),y)){
 				x--;
 			}
 		}
@@ -81,7 +81,7 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
+			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)&&!board.hasEnemyAt((x+1),y)){
 				x++;
 			}
 		}
@@ -101,7 +101,7 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
+			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))&&!board.hasEnemyAt(x,(y+1))){
 				y++;
 			}
 		}
@@ -121,7 +121,7 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
+			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))&&!board.hasEnemyAt(x,(y-1))){
 				y--;
 			}
 		}
