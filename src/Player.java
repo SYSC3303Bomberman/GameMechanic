@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -6,8 +5,8 @@ public class Player {
 
 	private Board board;
 	private int x, y;
-	private int bombsMaxNumber;
-	private int bombsNumber;
+	public int bombsMaxNumber;
+	public int bombsNumber;
 	private char command;	//command is the character received from clinet
 
 	public Player(Board board, int x, int y){
@@ -54,7 +53,7 @@ public class Player {
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt((x-1),y)) {
-				this.powerUp();
+				this.powerUp(this, (x-1),y);
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==(x-1))&&(board.powerups.get(i).getY()==y)) {
 						board.powerups.remove(i);
@@ -74,7 +73,7 @@ public class Player {
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt((x+1),y)) {
-				this.powerUp();
+				this.powerUp(this, (x+1),y);
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==(x+1))&&(board.powerups.get(i).getY()==y)) {
 						board.powerups.remove(i);
@@ -94,7 +93,7 @@ public class Player {
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt(x,(y+1))) {
-				this.powerUp();
+				this.powerUp(this, x,(y+1));
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y+1))) {
 						board.powerups.remove(i);
@@ -114,7 +113,7 @@ public class Player {
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt(x,(y-1))) {
-				this.powerUp();
+				this.powerUp(this, x,(y-1));
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y-1))) {
 						board.powerups.remove(i);
@@ -127,9 +126,12 @@ public class Player {
 		}
 	}
 
-	public void powerUp(){
-		bombsMaxNumber++;
-		bombsNumber++;
+	public void powerUp(Player player, int x, int y){
+		for(int i = 0; i < board.powerups.size(); i++){
+ 			if((board.powerups.get(i).getX() == x)&&(board.powerups.get(i).getY() == y)){
+ 				board.powerups.get(i).powerUp(this);
+ 			}
+ 		}
 	}
 	
 	public void loadBomb(){
