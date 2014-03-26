@@ -92,7 +92,7 @@ public class Board extends Thread {
 	}	
 
 	public void addPowerUp(int x, int y){
-		PowerUp powerup = new PowerUp(this, x, y);
+		PowerUp powerup = new BombPowerUp(this, x, y);
 		powerups.add(powerup);
 	}
 

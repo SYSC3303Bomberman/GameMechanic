@@ -1,14 +1,12 @@
 import java.net.SocketAddress;
-import java.util.ArrayList;
-
 
 public class Player extends Thread{
 
 	SocketAddress clientAddress;
 	private Board board;
 	private int x, y;
-	private int bombsMaxNumber;
-	private int bombsNumber;
+	public int bombsMaxNumber;
+	public int bombsNumber;
 	private String command;	//command is the character received from clinet
 
 	public Player(){}
@@ -61,7 +59,7 @@ public class Player extends Thread{
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt((x-1),y)) {
-				this.powerUp();
+				this.powerUp(this, (x-1),y);
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==(x-1))&&(board.powerups.get(i).getY()==y)) {
 						board.powerups.remove(i);
@@ -81,7 +79,7 @@ public class Player extends Thread{
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt((x+1),y)) {
-				this.powerUp();
+				this.powerUp(this, (x+1),y);
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==(x+1))&&(board.powerups.get(i).getY()==y)) {
 						board.powerups.remove(i);
@@ -101,7 +99,7 @@ public class Player extends Thread{
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt(x,(y+1))) {
-				this.powerUp();
+				this.powerUp(this, x,(y+1));
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y+1))) {
 						board.powerups.remove(i);
@@ -121,7 +119,7 @@ public class Player extends Thread{
 				board.players.clear();
 			}
 			if (board.hasPowerUpAt(x,(y-1))) {
-				this.powerUp();
+				this.powerUp(this, x, (y-1));
 				for (int i = 0; i < board.powerups.size() ; i++ ) {
 					if ((board.powerups.get(i).getX()==x)&&(board.powerups.get(i).getY()==(y-1))) {
 						board.powerups.remove(i);
@@ -134,9 +132,12 @@ public class Player extends Thread{
 		}
 	}
 
-	public void powerUp(){
-		bombsMaxNumber++;
-		this.loadBomb();
+	public void powerUp(Player player, int x, int y){
+		for(int i = 0; i < board.powerups.size(); i++){
+			if((board.powerups.get(i).getX() == x)&&(board.powerups.get(i).getY() == y)){
+				board.powerups.get(i).powerUp(this);
+			}
+		}
 	}
 
 	public void loadBomb(){
