@@ -10,6 +10,7 @@ public class Board extends Thread {
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 15;
 	public static final int DEFAULT_ENEMY_NUMBER = 5;
+	public static final int DEFAULT_SCREEN_REFRESH_PERIOD = 100;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
 	public ArrayList<PowerUp> powerups;
@@ -19,6 +20,7 @@ public class Board extends Thread {
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
 	public char[][] table;
+	public int playerLabel;
 
 	public Board() throws InterruptedException {
 		obstacles = new ArrayList<Obstacle>();
@@ -27,6 +29,7 @@ public class Board extends Thread {
 		enemies = new ArrayList<Enemy>();
 		players = new ArrayList<Player>();
 		bombs = new ArrayList<Bomb>();
+		playerLabel = 0;
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
@@ -92,7 +95,17 @@ public class Board extends Thread {
 	}	
 
 	public void addPowerUp(int x, int y){
-		PowerUp powerup = new PowerUp(this, x, y);
+		Random ran = new Random();
+		int temp;
+		PowerUp powerup;
+		temp = ran.nextInt(3); 
+		if(temp == 0){
+			powerup = new BombPowerUp(this, x, y);
+		}else if(temp == 1){	
+			powerup = new FlamePowerUp(this, x, y);
+		}else{
+			powerup = new WallPassPowerUp(this, x, y);
+		}
 		powerups.add(powerup);
 	}
 
@@ -104,20 +117,24 @@ public class Board extends Thread {
 	public void addEnemy(int x, int y) throws InterruptedException{
 		Enemy enemy = new Enemy(this, x, y);
 		enemies.add(enemy);
+		enemy.start();
 	}
 
-	public void addPlayer(SocketAddress clientAddress, String name){
+	public void addPlayer(SocketAddress clientAddress){
 		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		Player player = new Player(this, tempX, tempY, clientAddress, name);	//player starts at random place
+		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
+		player.playerLabel = this.playerLabel;
+		this.playerLabel++;
 		players.add(player);
 	}
 
 	public void addBomb(Bomb bomb){
 		bombs.add(bomb);
+		bomb.start();
 	}
 
 	public boolean hasDoorAt(int x, int y){
@@ -173,7 +190,7 @@ public class Board extends Thread {
 	public int distinguish(int x, int y){
 		for(int i = 0; i < players.size(); i++){
 			if((players.get(i).getX() == x)&&(players.get(i).getY() == y)){
-				return i;
+				return players.get(i).playerLabel;
 			}
 		}
 		return -1;
@@ -186,23 +203,35 @@ public class Board extends Thread {
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
 					str += 'O';
-				}else if(this.hasBoxAt(i,j)){
-					str += 'B';
-				}else if(this.hasEnemyAt(i,j)){
-					str += 'E';
 				}else if(this.hasPlayerAt(i,j)){
 					p = distinguish(i,j);
-					if (p==0) {
+					if (p == 0) {
 						str += 'P';
-					}else if (p==1){
+					}else if (p == 1){
 						str += 'p';
 					}else{
 
 					}
+				}else if(this.hasBoxAt(i,j)){
+					str += 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					str += 'E';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
 				}else if(this.hasPowerUpAt(i,j)) {
-					str += 'U';
+					for(int k = 0; k < powerups.size(); k++){
+ 						if((powerups.get(k).getX() == i)&&(powerups.get(k).getY() == j)){
+ 							if(powerups.get(k) instanceof FlamePowerUp){
+ 								str += 'L';
+ 							}else if(powerups.get(k) instanceof BombPowerUp){
+ 								str += 'U';
+ 							}else if(powerups.get(k) instanceof WallPassPowerUp){
+ 								str += 'W';
+ 							}else if(powerups.get(k) instanceof BombPassPowerUp){
+ 								str += 'b';
+ 							}
+ 						}
+ 					}
 				}else if(this.hasDoorAt(i,j)){
 					str += 'D';
 				}else{
@@ -236,7 +265,19 @@ public class Board extends Thread {
 				}else if(this.hasBombAt(i,j)){
 					table[i][j] = 'X';
 				}else if(this.hasPowerUpAt(i,j)) {
-					table[i][j] = 'U';
+					for(int k = 0; k < powerups.size(); k++){
+ 						if((powerups.get(k).getX() == i)&&(powerups.get(k).getY() == j)){
+ 							if(powerups.get(k) instanceof FlamePowerUp){
+ 								table[i][j] = 'L';
+ 							}else if(powerups.get(k) instanceof BombPowerUp){
+ 								table[i][j] = 'U';
+ 							}else if(powerups.get(k) instanceof WallPassPowerUp){
+ 								table[i][j] = 'W';
+ 							}else if(powerups.get(k) instanceof BombPassPowerUp){
+ 								table[i][j] = 'b';
+ 							}
+ 						}
+ 					}
 				}else if(this.hasDoorAt(i,j)){
 					table[i][j] = 'D';
 				}else{

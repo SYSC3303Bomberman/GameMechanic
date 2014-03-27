@@ -1,8 +1,9 @@
-public class Bomb extends Thread{
+public abstract class Bomb extends Thread{
 
-	private Board board;
-	private int x, y;
-	private Player player;
+	public static final int DEFAULT_BOMB_EXPOLSION_TIME = 800;
+	protected Board board;
+	protected int x, y;
+	protected Player player;
 
 	public Bomb(Board board, Player player, int x, int y){
 		this.x = x;
@@ -23,21 +24,21 @@ public class Bomb extends Thread{
 		return player;
 	}
 
-	public void explode(){
-		this.burn((x + 1), y);
-		this.burn((x - 1), y);
-		this.burn(x, y);
-		this.burn(x, (y + 1));
-		this.burn(x, (y - 1));
-		player.loadBomb();	// player loads one bomb at the time his bomb explodes
-		board.bombs.remove(this);
-	}
+	public abstract void explode();
 
 	public void burn(int x, int y){
-		if (board.hasBoxAt(x, y)) {
+		Bomb tempBomb;
+		if (board.hasPlayerAt(x, y)) {
+  			//player died
+  			for (int i = 0; i < board.players.size() ; i++ ) {
+  				if ((board.players.get(i).getX()==x)&&(board.players.get(i).getY()==y)) {
+  					board.players.remove(i);
+  				}
+  			}
+  		}else if (board.hasBoxAt(x, y)) {
 			//box destroyed
 			for (int i = 0; i < board.boxes.size() ; i++ ) {
-				if ((board.boxes.get(i).getX()==x)&&(board.boxes.get(i).getY()==y)) {
+				if ((board.boxes.get(i).getX()==x)&&(board.boxes.get(i).getY()==y)) {					
 					board.boxes.remove(i);
 				}
 			}
@@ -45,11 +46,35 @@ public class Bomb extends Thread{
 			//enemy killed
 			for (int i = 0; i < board.enemies.size() ; i++ ) {
 				if ((board.enemies.get(i).getX()==x)&&(board.enemies.get(i).getY()==y)) {
+					board.enemies.get(i).stop();
 					board.enemies.remove(i);
 				}
 			}
-		}
+		}else if (board.hasBombAt(x, y)) {
+ 			//bomb exploded
+ 			for (int i = 0; i < board.bombs.size() ; i++ ) {
+ 				if ((board.bombs.get(i).getX()==x)&&(board.bombs.get(i).getY()==y)) {
+ 					//board.bombs.get(i).explode();
+ 					tempBomb = board.bombs.get(i);
+ 					board.bombs.remove(i);
+ 					tempBomb.explode();
+ 				}
+ 			}
+  		}
 	}
+	
+	@Override
+	 public void run(){
+		while(true){
+		 	try {
+		 		Thread.sleep(DEFAULT_BOMB_EXPOLSION_TIME);
+	 		} catch (InterruptedException e) {
+		 		// TODO Auto-generated catch block
+	 			e.printStackTrace();
+	 		}
+	 		this.explode();
+	 	}
+	 }
 	
 }
 

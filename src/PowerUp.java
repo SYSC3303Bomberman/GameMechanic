@@ -1,8 +1,8 @@
 
-public class PowerUp {
+public abstract class PowerUp {
 
-	private Board board;
-	private int x, y;
+	protected Board board;
+	protected int x, y;
 
 	public PowerUp(Board board, int x, int y){
 		this.x = x;
@@ -17,5 +17,7 @@ public class PowerUp {
 	public int getY(){
 		return y;
 	}
+	
+	public abstract void powerUp(Player player);
 	
 }
