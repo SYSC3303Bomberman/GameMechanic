@@ -7,6 +7,10 @@ public class Player extends Thread{
 	private int x, y;
 	public int bombsMaxNumber;
 	public int bombsNumber;
+	public int bombesLevel;
+	boolean wallPass;
+	boolean bombPass;
+	boolean flamePass;
 	private String command;	//command is the character received from clinet
 
 	public Player(){}
@@ -18,6 +22,10 @@ public class Player extends Thread{
 		this.clientAddress = clientAddress;
 		bombsMaxNumber = 1;
 		bombsNumber = 1;
+		bombPass = 1;
+		wallPass = false;
+		bombPass = false;
+		flamePass = false;
 	}
 
 	public int getX(){
@@ -66,9 +74,21 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasPlayerAt((x-1),y)&&!board.hasBombAt((x-1),y)&&!board.hasEnemyAt((x-1),y)){
-				x--;
-			}
+			if(board.hasObstacleAt((x-1),y)){
+ 				
+ 			}else if(board.hasBoxAt((x-1),y)){
+ 				if(wallPass == true){
+ 					x--;
+ 				}
+ 			}else if(board.hasPlayerAt((x-1),y)){
+ 				
+ 			}else if(board.hasBombAt((x-1),y)){
+ 				if(bombPass == true){
+ 					x--;
+ 				}
+ 			}else{
+  				x--;
+  			}
 		}
 	}
 
@@ -86,9 +106,21 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)&&!board.hasEnemyAt((x+1),y)){
-				x++;
-			}
+			if(board.hasObstacleAt((x+1),y)){
+ 				
+ 			}else if(board.hasBoxAt((x+1),y)){
+ 				if(wallPass == true){
+ 					x++;
+ 				}
+ 			}else if(board.hasPlayerAt((x+1),y)){
+ 				
+ 			}else if(board.hasBombAt((x+1),y)){
+ 				if(bombPass == true){
+ 					x++;
+ 				}
+ 			}else{
+  				x++;
+  			}
 		}
 	}
 
@@ -106,9 +138,21 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))&&!board.hasEnemyAt(x,(y+1))){
-				y++;
-			}
+			if(board.hasObstacleAt(x,(y+1))){
+ 				
+			}else if(board.hasBoxAt(x,(y+1))){
+ 				if(wallPass == true){
+					y++;
+ 				}
+ 			}else if(board.hasPlayerAt(x,(y+1))){
+ 				
+ 			}else if(board.hasBombAt(x,(y+1))){
+ 				if(bombPass == true){
+ 					y++;
+ 				}
+ 			}else{
+  				y++;
+  			}
 		}
 	}
 
@@ -126,9 +170,21 @@ public class Player extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))&&!board.hasEnemyAt(x,(y-1))){
-				y--;
-			}
+			if(board.hasObstacleAt(x,(y-1))){
+ 				
+ 			}else if(board.hasBoxAt(x,(y-1))){
+ 				if(wallPass == true){
+ 					y--;
+ 				}
+ 			}else if(board.hasPlayerAt(x,(y-1))){
+ 				
+ 			}else if(board.hasBombAt(x,(y-1))){
+ 				if(bombPass == true){
+ 					y--;
+ 				}
+ 			}else{
+  				y--;
+  			}
 		}
 	}
 
@@ -147,8 +203,24 @@ public class Player extends Thread{
 	public void placeBomb(){
 		if (bombsNumber > 0) {
 			bombsNumber--;
-			Bomb bomb = new Bomb(board, this, x, y);
-			board.addBomb(bomb);
+			if (bombsLevel == 1) {
+ 				Bomb bomb = new LevelOneBomb(board, this, x, y);
+ 				board.addBomb(bomb);
+ 			}else if (bombsLevel == 2) {
+ 				Bomb bomb = new LevelTwoBomb(board, this, x, y);
+ 				board.addBomb(bomb);
+ 			}else if (bombsLevel == 3) {
+ 				Bomb bomb = new LevelThreeBomb(board, this, x, y);
+ 				board.addBomb(bomb);
+ 			}else if (bombsLevel == 4) {
+ 				Bomb bomb = new LevelFourBomb(board, this, x, y);
+ 				board.addBomb(bomb);
+ 			}else if (bombsLevel == 5) {
+ 				Bomb bomb = new LevelFiveBomb(board, this, x, y);
+ 				board.addBomb(bomb);
+ 			}else{
+ 				
+ 			}
 		}
 	}
 
