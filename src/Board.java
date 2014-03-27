@@ -19,6 +19,8 @@ public class Board extends Thread {
 	public ArrayList<Player> players;
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
+	public char[][] table;
+	public int playerLabel;
 
 	public Board() throws InterruptedException {
 		obstacles = new ArrayList<Obstacle>();
@@ -27,6 +29,7 @@ public class Board extends Thread {
 		enemies = new ArrayList<Enemy>();
 		players = new ArrayList<Player>();
 		bombs = new ArrayList<Bomb>();
+		playerLabel = 0;
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
@@ -124,6 +127,8 @@ public class Board extends Thread {
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
 		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
+		player.playerLabel = this.playerLabel;
+		this.playerLabel++;
 		players.add(player);
 	}
 
@@ -182,14 +187,31 @@ public class Board extends Thread {
 		return false;
 	}
 	
+	public int distinguish(int x, int y){
+		for(int i = 0; i < players.size(); i++){
+			if((players.get(i).getX() == x)&&(players.get(i).getY() == y)){
+				return players.get(i).playerLabel;
+			}
+		}
+		return -1;
+	}
+	
 	public String toString(){
 		String str = "";
+		int p;
 		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
 					str += 'O';
 				}else if(this.hasPlayerAt(i,j)){
-					str += 'P';
+					p = distinguish(i,j);
+					if (p == 0) {
+						str += 'P';
+					}else if (p == 1){
+						str += 'p';
+					}else{
+
+					}
 				}else if(this.hasBoxAt(i,j)){
 					str += 'B';
 				}else if(this.hasEnemyAt(i,j)){
@@ -219,6 +241,50 @@ public class Board extends Thread {
 			str += '\n';
 		}
 		return str;
+	}
+	
+	public void form(){
+		int p;
+		for(int i = 0; i < DEFAULT_BOARD_WIDTH; i++){
+			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
+				if(this.hasObstacleAt(i,j)){
+					table[i][j] = 'O';
+				}else if(this.hasBoxAt(i,j)){
+					table[i][j] = 'B';
+				}else if(this.hasEnemyAt(i,j)){
+					table[i][j] = 'E';
+				}else if(this.hasPlayerAt(i,j)){
+					p = distinguish(i,j);
+					if (p==0) {
+						table[i][j] = 'P';
+					}else if (p==1){
+						table[i][j] = 'p';
+					}else{
+
+					}
+				}else if(this.hasBombAt(i,j)){
+					table[i][j] = 'X';
+				}else if(this.hasPowerUpAt(i,j)) {
+					for(int k = 0; k < powerups.size(); k++){
+ 						if((powerups.get(k).getX() == i)&&(powerups.get(k).getY() == j)){
+ 							if(powerups.get(k) instanceof FlamePowerUp){
+ 								table[i][j] = 'L';
+ 							}else if(powerups.get(k) instanceof BombPowerUp){
+ 								table[i][j] = 'U';
+ 							}else if(powerups.get(k) instanceof WallPassPowerUp){
+ 								table[i][j] = 'W';
+ 							}else if(powerups.get(k) instanceof BombPassPowerUp){
+ 								table[i][j] = 'b';
+ 							}
+ 						}
+ 					}
+				}else if(this.hasDoorAt(i,j)){
+					table[i][j] = 'D';
+				}else{
+					table[i][j] = ' ';
+				}
+			}
+		}
 	}
 
 	public void printBoard(){

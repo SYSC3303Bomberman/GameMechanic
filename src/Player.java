@@ -5,9 +5,10 @@ public class Player extends Thread{
 	SocketAddress clientAddress;
 	private Board board;
 	private int x, y;
+	public int playerLabel;
 	public int bombsMaxNumber;
 	public int bombsNumber;
-	public int bombesLevel;
+	public int bombsLevel;
 	boolean wallPass;
 	boolean bombPass;
 	boolean flamePass;
@@ -22,7 +23,7 @@ public class Player extends Thread{
 		this.clientAddress = clientAddress;
 		bombsMaxNumber = 1;
 		bombsNumber = 1;
-		bombPass = 1;
+		bombsLevel = 1;
 		wallPass = false;
 		bombPass = false;
 		flamePass = false;
