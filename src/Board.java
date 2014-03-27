@@ -120,13 +120,13 @@ public class Board extends Thread {
 		enemy.start();
 	}
 
-	public void addPlayer(SocketAddress clientAddress){
+	public void addPlayer(SocketAddress clientAddress, String name){
 		Random ran = new Random();
 		do{
 			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
-		Player player = new Player(this, tempX, tempY, clientAddress);	//player starts at random place
+		Player player = new Player(this, tempX, tempY, clientAddress, name);	//player starts at random place
 		player.playerLabel = this.playerLabel;
 		this.playerLabel++;
 		players.add(player);

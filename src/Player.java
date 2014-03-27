@@ -3,6 +3,7 @@ import java.net.SocketAddress;
 public class Player extends Thread{
 
 	SocketAddress clientAddress;
+	String name;
 	private Board board;
 	private int x, y;
 	public int playerLabel;
@@ -16,11 +17,12 @@ public class Player extends Thread{
 
 	public Player(){}
 	
-	public Player(Board board, int x, int y, SocketAddress clientAddress){
+	public Player(Board board, int x, int y, SocketAddress clientAddress, String name){
 		this.x = x;
 		this.y = y;
 		this.board = board;
 		this.clientAddress = clientAddress;
+		this.name = name;	
 		bombsMaxNumber = 1;
 		bombsNumber = 1;
 		bombsLevel = 1;
@@ -36,6 +38,11 @@ public class Player extends Thread{
 	public int getY(){
 		return y;
 	}
+	
+	public String getPlayerName(){
+		return name;
+	}
+
 	
 	public int getBombsNumber() {
 		return bombsNumber;		
