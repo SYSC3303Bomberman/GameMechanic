@@ -3,33 +3,56 @@ GameMechanic
 March 26th 2014
 
 Board:
-int playerLabel increases whenever new player is added. 
+
+int playerLabel increases whenever new player is added.
+
 playerLabel lives with player.
+
 distinguish function return playerLabel to print different character for different player.
+
 PowerUp random create in initallization.
+
 Different characters for different powerUps.
 
+
 Bomb:
+
 Abstract Class.
+
 Bomb can kill players, can burn bombs.
 
+
 Enemy:
+
 Enemis can kill players.
+
 Enemis have randomly movement now.
 
+
 Player:
+
 player has many boolean variables wallPass, bombPass, flamePass which will be changed by corresbonding powerUp.
 
+
 BombPowerUp: increase Max number of bombs player can carry.
+
 BombPassPowerUp: player can overlap bombs.
+
 WallPassPowerUp: player can overlap boxes.
+
 FlamePowerUp: incearse flame length by one.
 
+
 LevelOneBomb: bomb with flame length one.
+
 LevelTwoBomb: bomb with flame length two.
+
 LevelThreeBomb: bomb with flame length three.
+
 LevelFourBomb: bomb with flame length four.
+
 LevelFiveBomb: bomb with flame length five.
+
 
 -----------------------------------------------------------------------------------------------------------------
 
