@@ -1,9 +1,9 @@
 
-public class Bomb {
+public abstract class Bomb {
 
-	private Board board;
-	private int x, y;
-	private Player player;
+	protected Board board;
+	protected int x, y;
+	protected Player player;
 	/* ALL BELOW FOR TEST */
 	private int timer = 0;
 	/* ALL ABOVE FOR TEST */
@@ -27,17 +27,10 @@ public class Bomb {
 		return player;
 	}
 
-	public void explode(){
-		this.burn((x + 1), y);
-		this.burn((x - 1), y);
-		this.burn(x, y);
-		this.burn(x, (y + 1));
-		this.burn(x, (y - 1));
-		player.loadBomb();	// player loads one bomb at the time his bomb explodes
-		board.bombs.remove(this);
-	}
+	public abstract void explode();
 
 	public void burn(int x, int y){
+		Bomb tempBomb;
 		if (board.hasPlayerAt(x, y)) {
 			//player died
 			for (int i = 0; i < board.players.size() ; i++ ) {
@@ -57,6 +50,16 @@ public class Bomb {
 			for (int i = 0; i < board.enemies.size() ; i++ ) {
 				if ((board.enemies.get(i).getX()==x)&&(board.enemies.get(i).getY()==y)) {
 					board.enemies.remove(i);
+				}
+			}
+		}else if (board.hasBombAt(x, y)) {
+			//bomb exploded
+			for (int i = 0; i < board.bombs.size() ; i++ ) {
+				if ((board.bombs.get(i).getX()==x)&&(board.bombs.get(i).getY()==y)) {
+					//board.bombs.get(i).explode();
+					tempBomb = board.bombs.get(i);
+					board.bombs.remove(i);
+					tempBomb.explode();
 				}
 			}
 		}

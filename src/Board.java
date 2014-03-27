@@ -7,7 +7,7 @@ public class Board {
 	public static final int DEFAULT_BOARD_LENGTH = 9;
 	public static final int DEFAULT_BOARD_WIDTH = 9;
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
-	public static final int DEFAULT_BOX_NUMBER = 5;
+	public static final int DEFAULT_BOX_NUMBER = 4;
 	public static final int DEFAULT_ENEMY_NUMBER = 1;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
@@ -90,8 +90,19 @@ public class Board {
 		obstacles.add(obstacle);
 	}	
 
+	
 	public void addPowerUp(int x, int y){
-		PowerUp powerup = new BombPowerUp(this, x, y);
+		Random ran = new Random();
+		int temp;
+		PowerUp powerup;
+		temp = ran.nextInt(3); 
+		if(temp == 0){
+			powerup = new BombPowerUp(this, x, y);
+		}else if(temp == 1){	
+			powerup = new FlamePowerUp(this, x, y);
+		}else{
+			powerup = new WallPassPowerUp(this, x, y);
+		}
 		powerups.add(powerup);
 	}
 
@@ -176,16 +187,28 @@ public class Board {
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
 					str += 'O';
+				}else if(this.hasPlayerAt(i,j)){
+					str += 'P';
 				}else if(this.hasBoxAt(i,j)){
 					str += 'B';
 				}else if(this.hasEnemyAt(i,j)){
 					str += 'E';
-				}else if(this.hasPlayerAt(i,j)){
-					str += 'P';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
 				}else if(this.hasPowerUpAt(i,j)){
-					str += 'U';
+					for(int k = 0; k < powerups.size(); k++){
+						if((powerups.get(k).getX() == i)&&(powerups.get(k).getY() == j)){
+							if(powerups.get(k) instanceof FlamePowerUp){
+								str += 'L';
+							}else if(powerups.get(k) instanceof BombPowerUp){
+								str += 'U';
+							}else if(powerups.get(k) instanceof WallPassPowerUp){
+								str += 'W';
+							}else if(powerups.get(k) instanceof BombPassPowerUp){
+								str += 'b';
+							}
+						}
+					}
 				}else if(this.hasDoorAt(i,j)){
 					str += 'D';
 				}else{
