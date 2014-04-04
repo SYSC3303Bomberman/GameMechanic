@@ -8,7 +8,7 @@ public class Board {
 	public static final int DEFAULT_BOARD_WIDTH = 9;
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 4;
-	public static final int DEFAULT_ENEMY_NUMBER = 1;
+	public static final int DEFAULT_ENEMY_NUMBER = 0;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
 	public ArrayList<PowerUp> powerups;
@@ -17,14 +17,19 @@ public class Board {
 	public ArrayList<Player> players;
 	public ArrayList<Bomb> bombs;
 	private int tempX, tempY;
+	public int playerLabel;
 
 	public Board(){
-
+		players = new ArrayList<Player>();
+		playerLabel = 0;
+		this.initialize();
+	}
+	
+	public void initialize(){
 		obstacles = new ArrayList<Obstacle>();
 		powerups = new ArrayList<PowerUp>();
 		boxes = new ArrayList<Box>();
-		enemies = new ArrayList<Enemy>();
-		players = new ArrayList<Player>();
+		enemies = new ArrayList<Enemy>();	
 		bombs = new ArrayList<Bomb>();
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
@@ -124,6 +129,18 @@ public class Board {
 		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
 		Player player = new Player(this, tempX, tempY);	//player starts at random place
 		players.add(player);
+	}
+	
+	public void addExcitingPlayers(ArrayList<Player> players){
+		for(int i = 0; i < players.size(); i++){
+		Random ran = new Random();
+		do{
+			tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
+			tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
+		}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
+			players.get(i).setX(tempX);
+			players.get(i).setY(tempY);	//player starts at random place
+		}
 	}
 
 	public void addBomb(Bomb bomb){

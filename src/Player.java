@@ -53,12 +53,21 @@ public class Player {
 	public int getBombsNumber() {
 		return bombsNumber;		
 	}
+	
+	public void setX(int x){
+		this.x = x;
+	}
+
+	public void setY(int y){
+		this.y = y;
+	}
 
 	public void moveUp(){
 		if(x > 0){
 			if (board.hasDoorAt((x-1),y)&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt((x-1),y)) {
 				this.powerUp(this, (x-1),y);
@@ -89,8 +98,9 @@ public class Player {
 	public void moveDown(){
 		if(x < Board.DEFAULT_BOARD_WIDTH){
 			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt((x+1),y)) {
 				this.powerUp(this, (x+1),y);
@@ -121,8 +131,9 @@ public class Player {
 	public void moveRight(){
 		if(x < Board.DEFAULT_BOARD_LENGTH){
 			if (board.hasDoorAt(x,(y+1))&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt(x,(y+1))) {
 				this.powerUp(this, x,(y+1));
@@ -153,8 +164,9 @@ public class Player {
 	public void moveLeft(){
 		if(y > 0){
 			if (board.hasDoorAt(x,(y-1))&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt(x,(y-1))) {
 				this.powerUp(this, x,(y-1));
