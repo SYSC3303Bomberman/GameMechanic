@@ -266,7 +266,6 @@ public class Board extends Thread {
  							}
  						}
  					}
-
 				}else if(this.hasBoxAt(i,j)){
 					str += 'B';
 				}else if(this.hasBombAt(i,j)){
@@ -302,10 +301,20 @@ public class Board extends Thread {
 			for(int j = 0; j < DEFAULT_BOARD_LENGTH; j++){
 				if(this.hasObstacleAt(i,j)){
 					table[i][j] = 'O';
-				}else if(this.hasBoxAt(i,j)){
-					table[i][j] = 'B';
 				}else if(this.hasEnemyAt(i,j)){
-					table[i][j] = 'E';
+					for(int k = 0; k < enemies.size(); k++){
+ 						if((enemies.get(k).getX() == i)&&(enemies.get(k).getY() == j)){
+ 							if(enemies.get(k) instanceof Balloom){
+ 								table[i][j] = 'm';
+ 							}else if(enemies.get(k) instanceof Oneal){
+ 								table[i][j] = 'l';
+ 							}else if(enemies.get(k) instanceof Doll){
+ 								table[i][j] = 'd';
+ 							}else if(enemies.get(k) instanceof Minvo){
+ 								table[i][j] = 'v';
+ 							}
+ 						}
+ 					}
 				}else if(this.hasPlayerAt(i,j)){
 					p = distinguish(i,j);
 					if (p==0) {
@@ -315,6 +324,8 @@ public class Board extends Thread {
 					}else{
 
 					}
+				}else if(this.hasBoxAt(i,j)){
+					table[i][j] = 'B';
 				}else if(this.hasBombAt(i,j)){
 					table[i][j] = 'X';
 				}else if(this.hasPowerUpAt(i,j)) {
