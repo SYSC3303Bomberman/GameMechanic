@@ -23,13 +23,17 @@ public class Board extends Thread {
 	public int playerLabel;
 
 	public Board() throws InterruptedException {
+		players = new ArrayList<Player>();
+		playerLabel = 0;
+		this.initialize();
+	}
+
+	public void initialize() throws InterruptedException{
 		obstacles = new ArrayList<Obstacle>();
 		powerups = new ArrayList<PowerUp>();
 		boxes = new ArrayList<Box>();
-		enemies = new ArrayList<Enemy>();
-		players = new ArrayList<Player>();
+		enemies = new ArrayList<Enemy>();		
 		bombs = new ArrayList<Bomb>();
-		playerLabel = 0;
 		/* ADD OBSTACLES ON TOP AND BOTTOM EDGES */
 		for (int j = 0; j < DEFAULT_BOARD_LENGTH ; j++) {
 			this.addObstacle(0, j);
@@ -82,13 +86,13 @@ public class Board extends Thread {
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
 			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY));
-			this.addEnemy(tempX, tempY);	//boxes place at ranom places
+			this.addEnemy(tempX, tempY);	//boxes place at random places
 		}
 		/* ENEMY INITIALIZATION DONE */
 
 		/* Obsatacles,door, powerups, boxes, enemies can be displayed on GUI*/
 	}
-
+	
 	public void addObstacle(int x, int y){
 		Obstacle obstacle = new Obstacle(this, x, y);
 		obstacles.add(obstacle);
@@ -130,6 +134,18 @@ public class Board extends Thread {
 		player.playerLabel = this.playerLabel;
 		this.playerLabel++;
 		players.add(player);
+	}
+	
+	public void addExcitingPlayers(ArrayList<Player> players){
+		for(int i = 0; i < players.size(); i++){
+			Random ran = new Random();
+			do{
+				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
+				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
+			}while(this.hasObstacleAt(tempX, tempY)||this.hasBoxAt(tempX, tempY)||this.hasEnemyAt(tempX, tempY)||this.hasPlayerAt(tempX, tempY));
+			players.get(i).setX(tempX);
+			players.get(i).setY(tempY);	//player starts at random place
+		}
 	}
 
 	public void addBomb(Bomb bomb){

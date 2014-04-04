@@ -42,7 +42,6 @@ public class Player extends Thread{
 	public String getPlayerName(){
 		return name;
 	}
-
 	
 	public int getBombsNumber() {
 		return bombsNumber;		
@@ -52,8 +51,16 @@ public class Player extends Thread{
 		return this.clientAddress;
 	}
 	
+	public void setX(int x){
+		this.x = x;
+	}
+	
+	public void setY(int y){
+		this.y = y;
+	}
+	
 	/* method to convert character command to movement*/	
-	public void move(String movement){
+	public void move(String movement) throws InterruptedException{
 		command = movement;
 		if (command.equals("u")) {
 			this.moveUp();
@@ -68,11 +75,12 @@ public class Player extends Thread{
 		}
 	}
 	
-	public void moveUp(){
+	public void moveUp() throws InterruptedException{
 		if(x > 0){
 			if (board.hasDoorAt((x-1),y)&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt((x-1),y)) {
 				this.powerUp(this, (x-1),y);
@@ -100,11 +108,12 @@ public class Player extends Thread{
 		}
 	}
 
-	public void moveDown(){
+	public void moveDown() throws InterruptedException{
 		if(x < Board.DEFAULT_BOARD_WIDTH){
 			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt((x+1),y)) {
 				this.powerUp(this, (x+1),y);
@@ -132,11 +141,12 @@ public class Player extends Thread{
 		}
 	}
 
-	public void moveRight(){
+	public void moveRight() throws InterruptedException{
 		if(x < Board.DEFAULT_BOARD_LENGTH){
 			if (board.hasDoorAt(x,(y+1))&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt(x,(y+1))) {
 				this.powerUp(this, x,(y+1));
@@ -164,11 +174,12 @@ public class Player extends Thread{
 		}
 	}
 
-	public void moveLeft(){
+	public void moveLeft() throws InterruptedException{
 		if(y > 0){
 			if (board.hasDoorAt(x,(y-1))&&board.enemies.size()==0) {
-				System.out.println("CONGRATULATIONS");
-				board.players.clear();
+				System.out.println("LEVL PASS");
+				board.initialize();
+				board.addExcitingPlayers(board.players);
 			}
 			if (board.hasPowerUpAt(x,(y-1))) {
 				this.powerUp(this, x, (y-1));
