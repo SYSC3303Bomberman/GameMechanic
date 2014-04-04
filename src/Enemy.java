@@ -3,9 +3,11 @@ import java.util.Random;
 public class Enemy extends Thread{
 
 	public static final int DEFAULT_ENEMY_MOVE_PERIOD = 200;
-	private Board board;
-	private int x, y;
-	private int direction;
+	protected Board board;
+	protected int x, y;
+	protected int life;
+	protected int direction;
+	protected boolean wallPass;
 
 	public Enemy(Board board, int x, int y){
 		this.x = x;
@@ -21,6 +23,14 @@ public class Enemy extends Thread{
 		return y;
 	}
 	
+	public int getLife(){
+		return life;
+	}
+
+	public void damaged(){
+		life--;
+	}
+
 	public void moveUp(){
 		if(x > 0){
 			if (board.hasPlayerAt((x-1),y)) {
@@ -36,9 +46,17 @@ public class Enemy extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasBombAt((x-1),y)){
-				x--;
-			}
+			if(board.hasObstacleAt((x-1),y)){
+
+			}else if(board.hasBoxAt((x-1),y)){
+ 				if(wallPass == true){
+ 					x--;
+ 				}
+ 			}else if(board.hasBombAt((x-1),y)){
+ 
+ 			}else{
+  				x--;
+  			}
 		}
 	}
 
@@ -57,9 +75,17 @@ public class Enemy extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasBombAt((x+1),y)){
-				x++;
-			}
+			if(board.hasObstacleAt((x+1),y)){
+ 				
+ 			}else if(board.hasBoxAt((x+1),y)){
+ 				if(wallPass == true){
+ 					x++;
+ 				}
+ 			}else if(board.hasBombAt((x+1),y)){
+ 
+ 			}else{
+  				x++;
+  			}
 		}
 	}
 
@@ -78,9 +104,17 @@ public class Enemy extends Thread{
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
-				y++;
-			}
+			if(board.hasObstacleAt(x,(y+1))){
+ 				
+ 			}else if(board.hasBoxAt(x,(y+1))){
+ 				if(wallPass == true){
+ 					y++;
+ 				}
+ 			}else if(board.hasBombAt(x,(y+1))){
+ 
+ 			}else{
+  				y++;
+  			}
 		}
 	}
 
@@ -99,9 +133,17 @@ public class Enemy extends Thread{
 					}
 				}					
 			}
-			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
-				y--;
-			}
+			if(board.hasObstacleAt(x,(y-1))){
+ 				
+ 			}else if(board.hasBoxAt(x,(y-1))){
+ 				if(wallPass == true){
+ 					y--;
+ 				}
+ 			}else if(board.hasBombAt(x,(y-1))){
+ 
+ 			}else{
+  				y--;
+  			}
 		}
 	}
 	

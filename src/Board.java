@@ -119,7 +119,19 @@ public class Board extends Thread {
 	}
 
 	public void addEnemy(int x, int y) throws InterruptedException{
-		Enemy enemy = new Enemy(this, x, y);
+		Random ran = new Random();
+		int temp;
+		Enemy enemy;
+		temp = ran.nextInt(4); 
+		if(temp == 0){
+			enemy = new Balloom(this, x, y);
+		}else if(temp == 1){	
+			enemy = new Oneal(this, x, y);
+		}else if(temp == 2){
+			enemy = new Doll(this, x, y);
+		}else{
+			enemy = new Minvo(this, x, y);
+		}
 		enemies.add(enemy);
 		enemy.start();
 	}
@@ -228,10 +240,23 @@ public class Board extends Thread {
 					}else{
 
 					}
+				}else if(this.hasEnemyAt(i,j)){
+					for(int k = 0; k < enemies.size(); k++){
+ 						if((enemies.get(k).getX() == i)&&(enemies.get(k).getY() == j)){
+ 							if(enemies.get(k) instanceof Balloom){
+ 								str += 'm';
+ 							}else if(enemies.get(k) instanceof Oneal){
+ 								str += 'l';
+ 							}else if(enemies.get(k) instanceof Doll){
+ 								str += 'd';
+ 							}else if(enemies.get(k) instanceof Minvo){
+ 								str += 'v';
+ 							}
+ 						}
+ 					}
+
 				}else if(this.hasBoxAt(i,j)){
 					str += 'B';
-				}else if(this.hasEnemyAt(i,j)){
-					str += 'E';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
 				}else if(this.hasPowerUpAt(i,j)) {

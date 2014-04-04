@@ -46,8 +46,11 @@ public abstract class Bomb extends Thread{
 			//enemy killed
 			for (int i = 0; i < board.enemies.size() ; i++ ) {
 				if ((board.enemies.get(i).getX()==x)&&(board.enemies.get(i).getY()==y)) {
-					board.enemies.get(i).stop();
-					board.enemies.remove(i);
+					board.enemies.get(i).damaged();
+					if (board.enemies.get(i).getLife() == 0) {
+						board.enemies.get(i).stop();
+						board.enemies.remove(i);
+					}
 				}
 			}
 		}else if (board.hasBombAt(x, y)) {
