@@ -49,7 +49,10 @@ public abstract class Bomb {
 			//enemy killed
 			for (int i = 0; i < board.enemies.size() ; i++ ) {
 				if ((board.enemies.get(i).getX()==x)&&(board.enemies.get(i).getY()==y)) {
-					board.enemies.remove(i);
+					board.enemies.get(i).damaged();
+					if (board.enemies.get(i).getLife() == 0){
+						board.enemies.remove(i);
+					}	
 				}
 			}
 		}else if (board.hasBombAt(x, y)) {

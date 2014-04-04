@@ -3,8 +3,10 @@ import java.util.Random;
 
 public class Enemy {
 
-	private Board board;
-	private int x, y;
+	protected Board board;
+	protected int x, y;
+	protected int life;
+	protected boolean wallPass;
 	/* ALL BELOW FOR TEST */
 	private int direction;
 	/* ALL ABOVE FOR TEST */
@@ -22,6 +24,14 @@ public class Enemy {
 	public int getY(){
 		return y;
 	}
+	
+	public int getLife(){
+		return life;
+	}
+	
+	public void damaged(){
+		life--;
+	}
 
 	public void moveUp(){
 		if(x > 0){
@@ -32,7 +42,15 @@ public class Enemy {
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x-1),y)&&!board.hasBoxAt((x-1),y)&&!board.hasBombAt((x-1),y)){
+			if(board.hasObstacleAt((x-1),y)){
+				
+			}else if(board.hasBoxAt((x-1),y)){
+				if(wallPass == true){
+					x--;
+				}
+			}else if(board.hasBombAt((x-1),y)){
+
+			}else{
 				x--;
 			}
 		}
@@ -47,7 +65,15 @@ public class Enemy {
 					}
 				}
 			}
-			if(!board.hasObstacleAt((x+1),y)&&!board.hasBoxAt((x+1),y)&&!board.hasPlayerAt((x+1),y)&&!board.hasBombAt((x+1),y)){
+			if(board.hasObstacleAt((x+1),y)){
+				
+			}else if(board.hasBoxAt((x+1),y)){
+				if(wallPass == true){
+					x++;
+				}
+			}else if(board.hasBombAt((x+1),y)){
+
+			}else{
 				x++;
 			}
 		}
@@ -62,7 +88,15 @@ public class Enemy {
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y+1))&&!board.hasBoxAt(x,(y+1))&&!board.hasPlayerAt(x,(y+1))&&!board.hasBombAt(x,(y+1))){
+			if(board.hasObstacleAt(x,(y+1))){
+				
+			}else if(board.hasBoxAt(x,(y+1))){
+				if(wallPass == true){
+					y++;
+				}
+			}else if(board.hasBombAt(x,(y+1))){
+
+			}else{
 				y++;
 			}
 		}
@@ -77,7 +111,15 @@ public class Enemy {
 					}
 				}
 			}
-			if(!board.hasObstacleAt(x,(y-1))&&!board.hasBoxAt(x,(y-1))&&!board.hasPlayerAt(x,(y-1))&&!board.hasBombAt(x,(y-1))){
+			if(board.hasObstacleAt(x,(y-1))){
+				
+			}else if(board.hasBoxAt(x,(y-1))){
+				if(wallPass == true){
+					y--;
+				}
+			}else if(board.hasBombAt(x,(y-1))){
+
+			}else{
 				y--;
 			}
 		}

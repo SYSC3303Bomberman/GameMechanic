@@ -8,7 +8,7 @@ public class Board {
 	public static final int DEFAULT_BOARD_WIDTH = 9;
 	public static final int DEFAULT_POWERUP_NUMBER = 3;
 	public static final int DEFAULT_BOX_NUMBER = 4;
-	public static final int DEFAULT_ENEMY_NUMBER = 0;
+	public static final int DEFAULT_ENEMY_NUMBER = 3;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
 	public ArrayList<PowerUp> powerups;
@@ -117,7 +117,19 @@ public class Board {
 	}
 
 	public void addEnemy(int x, int y){
-		Enemy enemy = new Enemy(this, x, y);
+		Random ran = new Random();
+		int temp;
+		Enemy enemy;
+		temp = ran.nextInt(4); 
+		if(temp == 0){
+			enemy = new Balloom(this, x, y);
+		}else if(temp == 1){	
+			enemy = new Oneal(this, x, y);
+		}else if(temp == 2){
+			enemy = new Doll(this, x, y);
+		}else{
+			enemy = new Minvo(this, x, y);
+		}
 		enemies.add(enemy);
 	}
 
@@ -206,10 +218,22 @@ public class Board {
 					str += 'O';
 				}else if(this.hasPlayerAt(i,j)){
 					str += 'P';
+				}else if(this.hasEnemyAt(i,j)){
+					for(int k = 0; k < enemies.size(); k++){
+						if((enemies.get(k).getX() == i)&&(enemies.get(k).getY() == j)){
+							if(enemies.get(k) instanceof Balloom){
+								str += 'm';
+							}else if(enemies.get(k) instanceof Oneal){
+								str += 'l';
+							}else if(enemies.get(k) instanceof Doll){
+								str += 'd';
+							}else if(enemies.get(k) instanceof Minvo){
+								str += 'v';
+							}
+						}
+					}			
 				}else if(this.hasBoxAt(i,j)){
 					str += 'B';
-				}else if(this.hasEnemyAt(i,j)){
-					str += 'E';
 				}else if(this.hasBombAt(i,j)){
 					str += 'X';
 				}else if(this.hasPowerUpAt(i,j)){
