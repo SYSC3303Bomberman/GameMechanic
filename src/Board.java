@@ -6,9 +6,10 @@ public class Board {
 
 	public static final int DEFAULT_BOARD_LENGTH = 9;
 	public static final int DEFAULT_BOARD_WIDTH = 9;
-	public static final int DEFAULT_POWERUP_NUMBER = 3;
-	public static final int DEFAULT_BOX_NUMBER = 4;
-	public static final int DEFAULT_ENEMY_NUMBER = 3;
+	private int powerUpNumber = 0;
+	private int boxNumber = 1;
+	private int enemyNumber = 0;
+	private int level = 1;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
 	public ArrayList<PowerUp> powerups;
@@ -23,6 +24,10 @@ public class Board {
 		players = new ArrayList<Player>();
 		playerLabel = 0;
 		this.initialize();
+	}
+
+	public int getLevel(){
+		return level;
 	}
 	
 	public void initialize(){
@@ -59,7 +64,7 @@ public class Board {
 		this.addBox(tempX, tempY);
 		/* DOOR IS COVERED BY ONE BOX */
 
-		for(int i = 0; i < DEFAULT_POWERUP_NUMBER; i++){
+		for(int i = 0; i < powerUpNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -69,7 +74,7 @@ public class Board {
 		}
 		/* POWERUP INITIALIZATION DONE */
 
-		for(int i = DEFAULT_POWERUP_NUMBER+1; i < DEFAULT_BOX_NUMBER; i++){
+		for(int i = powerUpNumber+1; i < boxNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -78,7 +83,7 @@ public class Board {
 		}
 		/* BOX INITIALIZATION DONE */
 
-		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
+		for(int i = 0; i < enemyNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -207,6 +212,12 @@ public class Board {
 			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
 		}
 		return false;
+	}
+
+	public void upgrade(){
+		level++;
+		powerUpNumber++;
+		boxNumber++;
 	}
 	
 	public String toString(){
