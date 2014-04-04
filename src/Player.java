@@ -78,9 +78,15 @@ public class Player extends Thread{
 	public void moveUp() throws InterruptedException{
 		if(x > 0){
 			if (board.hasDoorAt((x-1),y)&&board.enemies.size()==0) {
-				System.out.println("LEVL PASS");
+				if (board.getLevel() == 6) {
+					System.out.println("CONGRATULATIONS");
+					board.players.clear();
+				}else{
+					System.out.println("LEVL PASS");
+				board.upgrade();
 				board.initialize();
 				board.addExcitingPlayers(board.players);
+				}			
 			}
 			if (board.hasPowerUpAt((x-1),y)) {
 				this.powerUp(this, (x-1),y);
@@ -111,9 +117,15 @@ public class Player extends Thread{
 	public void moveDown() throws InterruptedException{
 		if(x < Board.DEFAULT_BOARD_WIDTH){
 			if (board.hasDoorAt((x+1),y)&&board.enemies.size()==0) {
-				System.out.println("LEVL PASS");
+				if (board.getLevel() == 6) {
+					System.out.println("CONGRATULATIONS");
+					board.players.clear();
+				}else{
+					System.out.println("LEVL PASS");
+				board.upgrade();
 				board.initialize();
 				board.addExcitingPlayers(board.players);
+				}
 			}
 			if (board.hasPowerUpAt((x+1),y)) {
 				this.powerUp(this, (x+1),y);
@@ -144,9 +156,15 @@ public class Player extends Thread{
 	public void moveRight() throws InterruptedException{
 		if(x < Board.DEFAULT_BOARD_LENGTH){
 			if (board.hasDoorAt(x,(y+1))&&board.enemies.size()==0) {
-				System.out.println("LEVL PASS");
+				if (board.getLevel() == 6) {
+					System.out.println("CONGRATULATIONS");
+					board.players.clear();
+				}else{
+					System.out.println("LEVL PASS");
+				board.upgrade();
 				board.initialize();
 				board.addExcitingPlayers(board.players);
+				}
 			}
 			if (board.hasPowerUpAt(x,(y+1))) {
 				this.powerUp(this, x,(y+1));
@@ -177,9 +195,15 @@ public class Player extends Thread{
 	public void moveLeft() throws InterruptedException{
 		if(y > 0){
 			if (board.hasDoorAt(x,(y-1))&&board.enemies.size()==0) {
-				System.out.println("LEVL PASS");
+				if (board.getLevel() == 6) {
+					System.out.println("CONGRATULATIONS");
+					board.players.clear();
+				}else{
+					System.out.println("LEVL PASS");
+				board.upgrade();
 				board.initialize();
 				board.addExcitingPlayers(board.players);
+				}
 			}
 			if (board.hasPowerUpAt(x,(y-1))) {
 				this.powerUp(this, x, (y-1));

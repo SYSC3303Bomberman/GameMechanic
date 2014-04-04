@@ -7,9 +7,10 @@ public class Board extends Thread {
 
 	public static final int DEFAULT_BOARD_LENGTH = 21;
 	public static final int DEFAULT_BOARD_WIDTH = 15;
-	public static final int DEFAULT_POWERUP_NUMBER = 3;
-	public static final int DEFAULT_BOX_NUMBER = 15;
-	public static final int DEFAULT_ENEMY_NUMBER = 5;
+	private int powerUpNumber = 3;
+	private int boxNumber = 15;
+	private int enemyNumber = 5;
+	private int level = 1;
 	public static final int DEFAULT_SCREEN_REFRESH_PERIOD = 100;
 	public Door door;
 	public ArrayList<Obstacle> obstacles;
@@ -26,6 +27,10 @@ public class Board extends Thread {
 		players = new ArrayList<Player>();
 		playerLabel = 0;
 		this.initialize();
+	}
+
+	public int getLevel(){
+		return level;
 	}
 
 	public void initialize() throws InterruptedException{
@@ -62,7 +67,7 @@ public class Board extends Thread {
 		this.addBox(tempX, tempY);
 		/* DOOR IS COVERED BY ONE BOX */
 
-		for(int i = 1; i < DEFAULT_POWERUP_NUMBER; i++){
+		for(int i = 1; i < powerUpNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -72,7 +77,7 @@ public class Board extends Thread {
 		}
 		/* POWERUP INITIALIZATION DONE */
 
-		for(int i = (1 + DEFAULT_POWERUP_NUMBER); i < DEFAULT_BOX_NUMBER; i++){
+		for(int i = (1 + powerUpNumber); i < boxNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -81,7 +86,7 @@ public class Board extends Thread {
 		}
 		/* BOX INITIALIZATION DONE */
 
-		for(int i = 0; i < DEFAULT_ENEMY_NUMBER; i++){
+		for(int i = 0; i < enemyNumber; i++){
 			do{
 				tempX = ran.nextInt(Board.DEFAULT_BOARD_WIDTH); 
 				tempY = ran.nextInt(Board.DEFAULT_BOARD_LENGTH);	
@@ -213,6 +218,13 @@ public class Board extends Thread {
 			if((powerups.get(i).getX() == x)&&(powerups.get(i).getY() == y)){return true;}
 		}
 		return false;
+	}
+
+	public void upgrade(){
+		level++;
+		powerUpNumber++;
+		boxNumber++;
+		enemyNumber++;
 	}
 	
 	public int distinguish(int x, int y){
